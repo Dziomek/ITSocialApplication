@@ -9,7 +9,7 @@ class Profile(models.Model):
     id_user = models.IntegerField()
     bio = models.TextField(blank=True)
     profilimg = models.ImageField(upload_to='profile_images', default='blank-profile-picture.png')
-    location = models.CharField(max_length=100,blank=True)
+    location = models.CharField(max_length=100, blank=True)
     bday = models.DateTimeField(auto_now=False, auto_now_add=False)
 
     def __str__(self):
