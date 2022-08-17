@@ -15,8 +15,19 @@
                 <div class="logo">
                     <img src="" class="img-fluid" alt="logo">
                 </div>
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-danger alert-dismissible fade show">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
                 <form action="" method="POST" class="rounded bg-white shadow p-5">
                     {% csrf_token %}
+                    <!-- Error Alert -->
+
                     <h3 class="text-dark fw-bolder fs-4 mb-2">Create an account</h3>
                     <div class="form-floating mb-3">
                        <input type="text" name="username" class="form-control" id="floatingInput" placeholder="User name">

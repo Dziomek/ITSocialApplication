@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.contrib import messages
 from .models import Profile
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
 
 # Create your views here.
 
@@ -19,13 +20,14 @@ def sign_up(request):
         password = request.POST['password']
         confirm_password = request.POST['confirm_password']
         if username and email and password and confirm_password:
+            print(password == confirm_password)
             if password == confirm_password:
                 if User.objects.filter(email=email).exists():
                     messages.info(request, "User with this email already exists")
-                    return redirect('sign_up')
+                    return redirect('register')
                 elif User.objects.filter(username=username).exists():
                     messages.info(request, "User with this name already exists")
-                    return redirect('sign_up')
+                    return redirect('register')
                 else:
                     user = User.objects.create_user(username=username, email=email, password=password)
                     user.save()
