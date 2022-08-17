@@ -70,7 +70,14 @@ def sign_in(request):
     else:
         return render(request, 'login.html')
 
-@login_required(login_url ='sign_in')
+@login_required(login_url ='login')
 def log_out(request):
     auth.logout(request)
     return redirect('login')
+
+@login_required(login_url ='login')
+def profile_view(request):
+    if request.user.is_authenticated:
+        return render(request, 'profile.html')
+    else:
+        redirect('login')
