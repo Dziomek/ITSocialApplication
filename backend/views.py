@@ -14,19 +14,20 @@ def home_route(request):
 
 
 def sign_up(request):
+    can_submit = False
+
     if request.method == 'POST':
         username = request.POST['username']
         email = request.POST['email']
         password = request.POST['password']
         confirm_password = request.POST['confirm_password']
         if username and email and password and confirm_password:
-            print(password == confirm_password)
             if password == confirm_password:
                 if User.objects.filter(email=email).exists():
-                    messages.info(request, "User with this email already exists")
+                    messages.info(request, "User with this email already exists. Please try again")
                     return redirect('register')
                 elif User.objects.filter(username=username).exists():
-                    messages.info(request, "User with this name already exists")
+                    messages.info(request, "User with this name already exists. Please try again")
                     return redirect('register')
                 else:
                     user = User.objects.create_user(username=username, email=email, password=password)
@@ -40,9 +41,10 @@ def sign_up(request):
                     new_profile.save()
                     return redirect('login')
             else:
-                messages.info(request, "Passwords don't match")
+                messages.info(request, "Passwords don't match. Please try again")
                 return redirect('register')
         else:
+            messages.info(request, "Missing fields. Please try again")
             return redirect('register')
 
     else:
