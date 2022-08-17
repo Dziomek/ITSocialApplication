@@ -37,8 +37,8 @@ def sign_up(request):
 
                     #create a profile object for the new user
                     user_model = User.objects.get(username=username)
-                    new_profile = Profile.objects.create(user=user_model, id_user=user_model.id)
-                    new_profile.save()
+                    #new_profile = Profile.objects.create(user=user_model, id_user=user_model.id)
+                    #new_profile.save()
                     return redirect('login')
             else:
                 messages.info(request, "Passwords don't match. Please try again")
@@ -55,14 +55,14 @@ def sign_in(request):
     if request.method == "POST":
         username = request.POST['username']
         password = request.POST['password']
-
+        print(username, password)
         user = auth.authenticate(username=username, password=password)
-        if user is not None:
-            auth.login(request,user)
-            return redirect('/')
+        if user:
+            auth.login(request, user)
+            return redirect('home')
         else:
-            messages.info(request,"Credentials Invald")
-            return redirect('signin')
+            messages.info(request, "Credentials invalid. Please try again")
+            return redirect('login')
     else:
         return render(request, 'login.html')
 
