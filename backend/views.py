@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.contrib.auth.models import User, auth
 from django.http import HttpResponse
 from django.contrib import messages
@@ -8,14 +9,17 @@ from django.contrib.auth.forms import UserCreationForm
 
 # Create your views here.
 
+
+def start_route(request):
+    return redirect('home')
+
+
 @login_required(login_url='login')
 def home_route(request):
     return render(request, 'home.html')
 
 
 def sign_up(request):
-    can_submit = False
-
     if request.method == 'POST':
         username = request.POST['username']
         email = request.POST['email']
@@ -55,7 +59,7 @@ def sign_in(request):
     if request.method == "POST":
         username = request.POST['username']
         password = request.POST['password']
-        print(username, password)
+
         user = auth.authenticate(username=username, password=password)
         if user:
             auth.login(request, user)
@@ -67,6 +71,6 @@ def sign_in(request):
         return render(request, 'login.html')
 
 @login_required(login_url ='sign_in')
-def logout(request):
+def log_out(request):
     auth.logout(request)
-    return redirect('signin')
+    return redirect('login')
