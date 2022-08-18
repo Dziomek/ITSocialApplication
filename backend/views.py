@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib.auth.models import auth
 from .models import CustomUser
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
@@ -11,7 +11,7 @@ from django.contrib.auth.forms import UserCreationForm
 
 
 def start_route(request):
-    return redirect('home')
+    return redirect('login')
 
 
 def home_route(request):
@@ -43,11 +43,16 @@ def register(request):
         email = request.POST['email']
         password = request.POST['password']
         confirm_password = request.POST['password2']
+        gender = request.POST['other']
+
+        print(gender)
 
         if first_name and last_name and username and email and password and confirm_password:
             if password == confirm_password:
                 if CustomUser.objects.filter(email=email).exists():
                     messages.info(request, "User with this email already exists. Please try again")
-                    return HttpResponse('/')
+                elif CustomUser.objects.filter(username=username).exists():
+                    messages.info(request, "User with this name already exists. Please try again")
 
-        return redirect(login)
+    return redirect('login')
+

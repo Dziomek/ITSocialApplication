@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="/_static/css/start_page_style.css">
 </head>
 <body>
-    <!-- NAPISY -->
+<!-- NAPISY -->
     <div class="container d-flex flex-column flex-lg-row justify-content-evenly mt-5 pt-5">
         <div class="text-center text-lg-start mt-lg-5 pt-lg-5">
             <img id="appImg" src="/_static/images/github.png" class="img-fluid mb-3" alt="">
@@ -24,15 +24,16 @@
             {% csrf_token %}
             <div style="max-width: 28rem; width: 100%;">
                 <div class="bg-white shadow rounded p-3 input-group-lg">
-                    {% if messages %}
-                        {% for message in messages %}
-                            <div class="alert alert-danger alert-dismissible fade show">
-                                {{ message }}
-                                {{ can_submit }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                            </div>
-                        {% endfor %}
-                    {% endif %}
+                    <div class="container d-flex justify-content-evenly mt-1" style="height: 75px">
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-danger alert-dismissible fade show w-100">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
                     <div class="fw-normal text-center text-muted mb-4">
                         Do not have an account? <a href="" class="text-primary fw-bold text-decoration-none" data-bs-toggle="modal" data-bs-target="#exampleModal">Create an account</a>
                     </div>
@@ -56,8 +57,9 @@
                         </button>
                     </div>
                     <!-- Button trigger modal -->
+                <div class="container d-flex justify-content-evenly mt-1" style="height: 50px"></div>
                 </div>
-           </div>
+            </div>
        </form>
     </div>
 </body>
