@@ -1,0 +1,22 @@
+body {
+    background-color: #f5f8fa;
+}
+
+.nav__btn button:hover{
+    background: #e3e3e3 !important;
+}
+
+.nav__btn button:hover i{
+    color: #4B4847 !important;
+}
+
+.nav__btn-active {
+    border-bottom: 3px solid gray;
+}
+
+#profileImg {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+}
+

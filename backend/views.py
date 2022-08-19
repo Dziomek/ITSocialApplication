@@ -12,11 +12,11 @@ from .functions import make_birthday_date
 
 
 def start_route(request):
-    return redirect('login')
+    return redirect('home')
 
-
-def home_route(request):
-    return render(request, 'pages/home.html')
+@login_required(login_url='login')
+def home(request):
+    return render(request, 'pages/home_base.html')
 
 
 def login(request):
@@ -69,4 +69,5 @@ def register(request):
 
 
 def logout(request):
-    pass
+    auth.logout(request)
+    return redirect('login')
