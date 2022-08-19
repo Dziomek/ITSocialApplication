@@ -27,7 +27,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     lastname = models.CharField(max_length=150)
     birthday = models.TextField()
     gender = models.TextField()
-    is_active = models.BooleanField(default=False)  # pozniej doda sie jakas aktywacje maila i bedzie aktywny
+    is_active = models.BooleanField(default=True)  # pozniej doda sie jakas aktywacje maila i bedzie aktywny
     is_staff = models.BooleanField(default=False)
     objects = CustomUserManager()
 
