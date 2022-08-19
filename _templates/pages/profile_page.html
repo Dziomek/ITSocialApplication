@@ -3,6 +3,8 @@
 
 {% block profile %}
     <link rel="stylesheet" href="/_static/css/profile_page_style.css">
+
+    <script src="/_static/js/profile_page_script.js" defer></script>
     <div class="container d-flex flex-row justify-content-center mt-5 ">
         <div class="shadow rounded">
             <img id="profilePicture" src="{{ searched_profile.profile_img.url }}" class="rounded-circle m-5" alt="avatar">
@@ -28,7 +30,9 @@
         <div class="mx-3 "style="max-width: 60rem; width: 100%;">
             <div class="bg-white shadow rounded p-3 input-group-lg">
                 <h1 class="text-secondary fs-0 fw-bold mt-3">Bio</h1>
-
+            </div>
+            <div class="bg-white shadow rounded p-3 input-group-lg mt-4">
+                <h1 class="text-secondary fs-0 fw-bold mt-3">Posts</h1>
             </div>
         </div>
     </div>

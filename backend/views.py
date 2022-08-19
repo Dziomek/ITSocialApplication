@@ -63,8 +63,8 @@ def register(request):
                     messages.info(request, "User with this name already exists")
                 else:
                     user = CustomUser.objects.create_user(email=email, username=username, firstname=first_name,
-                                                   lastname=last_name, birthday=birthday, gender=gender,
-                                                   password=password)
+                                                          lastname=last_name, birthday=birthday, gender=gender,
+                                                          password=password)
                     profile = Profile(user=user)
                     profile.save()
 
@@ -80,6 +80,7 @@ def logout(request):
     auth.logout(request)
     return redirect('login')
 
+
 @login_required(login_url='login')
 def profile(request, username):
     current_user = request.user
@@ -91,3 +92,12 @@ def profile(request, username):
                                                        'user_profile': user_profile,
                                                        'searched_user': searched_user,
                                                        'searched_profile': searched_profile})
+
+
+@login_required(login_url='login')
+def forum(request):
+    current_user = request.user
+    user_profile = Profile.objects.get(user=current_user)
+
+    return render(request, 'pages/forum_page.html', {'current_user': current_user,
+                                                     'user_profile': user_profile})

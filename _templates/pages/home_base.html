@@ -36,20 +36,22 @@
 
             <div class="col d-flex justify-content-center">
                 <!-- Middle naviagation -->
-                <div class="mx-4 nav__btn nav__btn-active">
+                <div class="mx-4 nav__btn">
                     <a href="{% url 'home' %}">
-                        <button class="btn px-4 border-0 navigation">
+                        <button class="btn px-4 border-0" id="homeButton">
                             <i class="fa-solid fa-house fs-4 text-secondary" style="pointer-events: none"></i>
                         </button>
                     </a>
                 </div>
                 <div class="mx-4 nav__btn">
-                    <button class="btn px-4 border-0 navigation">
-                        <i class="fa-solid fa-book fs-4 text-secondary" style="pointer-events: none"></i>
-                    </button>
+                    <a href="{% url 'forum' %}">
+                        <button class="btn px-4 border-0" id="forumButton">
+                            <i class="fa-solid fa-book fs-4 text-secondary" style="pointer-events: none"></i>
+                        </button>
+                    </a>
                 </div>
                 <div class="mx-4 nav__btn">
-                    <button type="button" class="btn px-4 border-0 navigation">
+                    <button type="button" class="btn px-4 border-0">
                         <i class="fa-solid fa-bell fs-4 text-secondary" style="pointer-events: none">
                              <span class="badge bg-info">4</span>
                         </i>
@@ -80,6 +82,8 @@
     </div>
 </div>
 {% block profile %}
+{% endblock %}
+{% block forum %}
 {% endblock %}
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
