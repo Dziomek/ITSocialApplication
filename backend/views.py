@@ -11,7 +11,7 @@ from .functions import make_birthday_date
 # Create your views here.
 
 
-def start_route():
+def start_route(request):
     return redirect('home')
 
 
@@ -21,7 +21,7 @@ def home(request):
     user_profile = Profile.objects.get(user=current_user)
 
     return render(request, 'pages/home_base.html', {'current_user': current_user,
-                                                    'user_profile:': user_profile})
+                                                    'user_profile': user_profile})
 
 
 def login(request):
@@ -80,10 +80,14 @@ def logout(request):
     auth.logout(request)
     return redirect('login')
 
-
+@login_required(login_url='login')
 def profile(request, username):
     current_user = request.user
     user_profile = Profile.objects.get(user=current_user)
+    searched_user = CustomUser.objects.get(username=username)
+    searched_profile = Profile.objects.get(user=searched_user)
 
     return render(request, 'pages/profile_page.html', {'current_user': current_user,
-                                                       'user_profile': user_profile})
+                                                       'user_profile': user_profile,
+                                                       'searched_user': searched_user,
+                                                       'searched_profile': searched_profile})
