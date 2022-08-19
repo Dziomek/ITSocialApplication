@@ -36,3 +36,10 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.username
+
+
+class Profile(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    about = models.TextField(null=True)
+    profile_img = models.ImageField(upload_to='profile_images', default='blank_profile_picture.png')
+    location = models.CharField(max_length=150, null=True)

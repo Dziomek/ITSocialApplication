@@ -26,3 +26,7 @@ def make_birthday_date(year, month, day):
             month = '12'
 
     return f'{year}-{month}-{day}'
+
+
+def get_image_url(image_url):
+    return image_url.split('http://127.0.0.1:8000', 2)[1]

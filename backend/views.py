@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib.auth.models import auth
-from .models import CustomUser
+from .models import CustomUser, Profile
 from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm
-from .functions import make_birthday_date
+from .functions import make_birthday_date, get_image_url
+
 
 # Create your views here.
 
@@ -14,9 +14,16 @@ from .functions import make_birthday_date
 def start_route(request):
     return redirect('home')
 
+
 @login_required(login_url='login')
 def home(request):
-    return render(request, 'pages/home_base.html')
+    current_user = request.user
+    user_profile = Profile.objects.get(user=current_user)
+    profile_img = user_profile.profile_img
+
+    return render(request, 'pages/home_base.html', {'current_user': current_user,
+                                                    'user_profile:': user_profile,
+                                                    'profile_img': profile_img})
 
 
 def login(request):
@@ -57,9 +64,12 @@ def register(request):
                 elif CustomUser.objects.filter(username=username).exists():
                     messages.info(request, "User with this name already exists")
                 else:
-                    CustomUser.objects.create_user(email=email, username=username, firstname=first_name,
+                    user = CustomUser.objects.create_user(email=email, username=username, firstname=first_name,
                                                    lastname=last_name, birthday=birthday, gender=gender,
                                                    password=password)
+                    profile = Profile(user=user)
+                    profile.save()
+
                     messages.info(request, "User created successfully")
             else:
                 messages.info(request, "Passwords don't match. Please try again")
