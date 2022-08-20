@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib.auth.models import auth
-from .models import CustomUser, Profile
+from .models import CustomUser, Profile, Post
 from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -96,8 +96,25 @@ def profile(request, username):
 
 @login_required(login_url='login')
 def forum(request):
+    posts = Post.objects.all().order_by('-id')
     current_user = request.user
     user_profile = Profile.objects.get(user=current_user)
 
     return render(request, 'pages/forum_page.html', {'current_user': current_user,
-                                                     'user_profile': user_profile})
+                                                     'user_profile': user_profile,
+                                                     'posts': posts})
+
+
+@login_required(login_url='login')
+def add_post(request):
+    current_user = request.user
+
+    if request.method == 'POST':
+        topic = request.POST['topic']
+        content = request.POST['content']
+        picture = request.POST['picture']
+
+        if content:
+            post = Post(user=current_user, topic=topic, content=content, picture=picture)
+            post.save()
+    return redirect('forum')

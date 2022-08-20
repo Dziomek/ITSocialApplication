@@ -63,7 +63,7 @@
                 <!-- Avatar -->
                 <div class="d-flex align-items-center-justify-content-center">
                     <a href="{% url 'profile' current_user.username %}">
-                        <img id="profileImg" src="{{ user_profile.profile_img.url }}" class="rounded-circle me-2" alt="avatar">
+                        <img id="profileImg" src="{{ current_user.profile_img.url }}" class="rounded-circle me-2" alt="avatar">
                     </a>
                     <p class="mx-1 my-auto">{{ current_user.username }} </p>
                 </div>

@@ -1,3 +1,5 @@
+import datetime
+
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.db import models
 from django.contrib.auth.models import User
@@ -30,6 +32,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)  # pozniej doda sie jakas aktywacje maila i bedzie aktywny
     is_staff = models.BooleanField(default=False)
     objects = CustomUserManager()
+    profile_img = models.ImageField(upload_to='profile_images', default='blank_profile_picture.png')
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username', 'firstname', 'lastname', 'birthday', 'gender']
@@ -41,5 +44,12 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 class Profile(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     about = models.TextField(null=True)
-    profile_img = models.ImageField(upload_to='profile_images', default='blank_profile_picture.png')
     location = models.CharField(max_length=150, null=True)
+
+
+class Post(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    topic = models.TextField()
+    content = models.TextField()
+    picture = models.ImageField(blank=True, null=True)
+    date = models.DateField(auto_now_add=True)
