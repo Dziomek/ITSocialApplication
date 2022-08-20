@@ -87,11 +87,14 @@ def profile(request, username):
     user_profile = Profile.objects.get(user=current_user)
     searched_user = CustomUser.objects.get(username=username)
     searched_profile = Profile.objects.get(user=searched_user)
+    posts = Post.objects.filter(user=searched_user)
+    print(posts)
 
     return render(request, 'pages/profile_page.html', {'current_user': current_user,
                                                        'user_profile': user_profile,
                                                        'searched_user': searched_user,
-                                                       'searched_profile': searched_profile})
+                                                       'searched_profile': searched_profile,
+                                                       'posts': posts})
 
 
 @login_required(login_url='login')
@@ -118,3 +121,11 @@ def add_post(request):
             post = Post(user=current_user, topic=topic, content=content, picture=picture)
             post.save()
     return redirect('forum')
+
+
+@login_required(login_url='login')
+def post_view(request, post_id):
+    current_user = request.user
+    post = Post.objects.get(id=post_id)
+    return render(request, 'pages/post_page.html', {'post': post,
+                                                    'current_user': current_user})

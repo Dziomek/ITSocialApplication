@@ -51,7 +51,9 @@
                              <a href="{% url 'profile' post.user.username %}"><img src="{{ post.user.profile_img.url }}" class="rounded-circle" style="width: 38px; height: 38px; object-fit: cover" alt=""></a>
                              <div class="mx-2">
                                  <p class="m-0 fw-bold"> {{ post.user.username }} </p>
-                                 <span class="text-muted fs-7">{{ post.date }}</span>
+                                 <a href="{% url 'post_view' post.id %}" class="text-decoration-none">
+                                     <span class="text-muted fs-7">{{ post.date }}</span>
+                                 </a>
                              </div>
                          </div>
                          <i class="fas fa-ellipsis-h" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="post1Menu"></i>
@@ -76,7 +78,7 @@
                             <p>{{ post.content }}</p>
                             {% if post.picture %}
                                 <div class="d-flex flex-column align-items-center">
-                            <img src="{{ post.picture.url }}" alt="post image" class="img-fluid" style="max-height: 400px; width: 800px">
+                            <img src="{{ post.picture.url }}" alt="post image" class="img-fluid" style="max-height: 500px; width: 500px">
                                 </div>
                             {% endif %}
                         </div>

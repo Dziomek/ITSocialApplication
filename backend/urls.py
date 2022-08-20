@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import login, home, register, start_route, logout, profile, forum, add_post
+from .views import login, home, register, start_route, logout, profile, forum, add_post, post_view
 
 urlpatterns = [
     path('', start_route),
@@ -9,5 +9,6 @@ urlpatterns = [
     path('logout', logout, name='logout'),
     path('profile/<str:username>', profile, name='profile'),
     path('forum', forum, name='forum'),
-    path('add_post', add_post, name='add_post')
+    path('add_post', add_post, name='add_post'),
+    path('post/<int:post_id>', post_view, name='post_view')
 ]
