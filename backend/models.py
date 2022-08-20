@@ -53,3 +53,7 @@ class Post(models.Model):
     content = models.TextField()
     picture = models.ImageField(blank=True, null=True)
     date = models.DateField(auto_now_add=True)
+
+
+class Comment(models.Model):
+    pass
