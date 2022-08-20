@@ -1,0 +1,25 @@
+<form action="" method="POST">
+    {% csrf_token %}
+    <div class="modal fade" id="postModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="">
+                        <h2 class="modal-title" id="exampleModalLabel">Add new post</h2>
+                        <p class="text-muted fs-7">It is great opportunity to collaborate</p>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div style="height: 300px">
+                        <textarea class="form-control rounded bg-gray h-100" style="padding-top: 0.4rem" placeholder="Content"></textarea>
+                    </div>
+                    <hr>
+                    <label class="form-label" for="customFile">Image file (optional)</label>
+                    <input type="file" class="form-control mt-1" id="customFile" />
+                    <a href=""><button type="submit" class="btn btn-secondary submit_btn w-100 my-4">Add post</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

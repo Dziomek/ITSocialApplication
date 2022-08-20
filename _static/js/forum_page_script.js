@@ -9,4 +9,5 @@ function setForum() {
     homeParent.style.border = 'none'
 }
 
+
 setForum()

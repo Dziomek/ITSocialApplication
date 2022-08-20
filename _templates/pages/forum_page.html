@@ -1,7 +1,8 @@
 {% extends 'pages/home_base.html' %}
 
 {% block forum %}
-    <link rel="stylesheet" href="/_static/css/home_page_style.css">
+    {% include 'modals/add_post_modal.html' %}
+    <link rel="stylesheet" href="/_static/css/forum_page_style.css">
     <script src="/_static/js/forum_page_script.js" defer></script>
     <div class="container-fluid"  style="margin-top:150px">
         <div class="row justify-content-evenly">
@@ -9,6 +10,38 @@
 
             </div>
             <div class="col-lg-6">
+                <div class="bg-light shadow p-4">
+                    <div class="row mt-4 align-items-center">
+                        <div class="col-5">
+                            <div class="d-flex p-2">
+                                <i class="fa-solid fa-circle-info fs-5 me-3" style="color: orange"></i>
+                                Need some information?
+                            </div>
+                            <div class="d-flex p-2">
+                                <i class="fa-solid fa-circle-exclamation fs-5 me-3" style="color: orange"></i>
+                                Have something interesting?
+                            </div>
+                        </div>
+                        <div class="col-7 d-flex mb-3">
+                            <img src="/_static/images/github.png" class="img-fluid m-2" style="max-height: 100px" alt="">
+                            <div class="my-auto">
+                                <h1 class="m-3 fs-1 text-secondary my-auto">Upload new post</h1>
+                                <p class="m-3 text-dark my-auto">and share information with others</p>
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                    <div class="d-flex p-1 mt-3">
+                        <img src="{{ user_profile.profile_img.url }}" class="rounded-circle me-2 post__picture" alt="avatar">
+                        <div class="container-fluid">
+
+                            <button type="button" class="btn btn-light rounded-pill text-muted w-100" style="border: 1px solid #C8C8C8; text-align: start;"
+                            data-bs-toggle="modal" data-bs-target="#postModal">
+                                {{ current_user.username }}, create new post...
+                            </button>
+                        </div>
+                    </div>
+                </div>
                 <div class="bg-white p-4 rounded shadow mt-3">
                     <!-- author info -->
                     <div class="d-flex justify-content-between">
