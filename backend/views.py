@@ -20,7 +20,7 @@ def home(request):
     current_user = request.user
     user_profile = Profile.objects.get(user=current_user)
 
-    return render(request, 'pages/home_base.html', {'current_user': current_user,
+    return render(request, 'pages/home_page.html', {'current_user': current_user,
                                                     'user_profile': user_profile})
 
 
