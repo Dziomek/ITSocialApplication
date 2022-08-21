@@ -66,8 +66,16 @@ class Comment(models.Model):
 class Like(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    color = models.CharField(max_length=30, default='text-dark')
+
+    def __str__(self):
+        return self.user.username + ' ' +  str(self.post.id) + ' ' + self.color
 
 
 class Dislike(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    color = models.CharField(max_length=30, default='text-dark')
+
+    def __str__(self):
+        return self.user.username + ' ' + str(self.post.id)

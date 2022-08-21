@@ -6,6 +6,7 @@ from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .functions import make_birthday_date, get_number_of_comments
+from annoying.functions import get_object_or_None
 
 
 # Create your views here.
@@ -109,8 +110,8 @@ def forum(request):
     return render(request, 'pages/forum_page.html', {'current_user': current_user,
                                                      'user_profile': user_profile,
                                                      'posts': posts,
-                                                     'comments': comments})
-
+                                                     'comments': comments,
+                                                     })
 
 @login_required(login_url='login')
 def add_post(request):
@@ -135,7 +136,8 @@ def post_view(request, post_id):
 
     return render(request, 'pages/post_page.html', {'post': post,
                                                     'current_user': current_user,
-                                                    'comments': comments})
+                                                    'comments': comments,
+                                                    })
 
 
 @login_required(login_url='login')
@@ -181,14 +183,45 @@ def like_post(request, post_id):
     current_user = request.user
     post = Post.objects.get(id=post_id)
     if not Like.objects.filter(user=current_user, post=post):
-        post.rating += 1
-        post.save()
+        if not Dislike.objects.filter(user=current_user, post=post):
+            post.rating += 1
+            post.save()
+        else:
+            post.rating += 2
+            post.save()
+            dislike = Dislike.objects.get(user=current_user, post=post)
+            dislike.delete()
         like = Like(user=current_user, post=post)
+        like.color = 'text-primary'
         like.save()
     else:
         post.rating -= 1
         post.save()
         like = Like.objects.get(user=current_user, post=post)
         like.delete()
+
+    return redirect('post_view', post_id=post_id)
+
+@login_required(login_url='login')
+def dislike_post(request, post_id):
+    current_user = request.user
+    post = Post.objects.get(id=post_id)
+    if not Dislike.objects.filter(user=current_user, post=post):
+        if not Like.objects.filter(user=current_user, post=post):
+            post.rating -= 1
+            post.save()
+        else:
+            like = Like.objects.get(user=current_user, post=post)
+            like.delete()
+            post.rating -= 2
+            post.save()
+        dislike = Dislike(user=current_user, post=post)
+        dislike.color = 'text-primary'
+        dislike.save()
+    else:
+        post.rating += 1
+        post.save()
+        dislike = Dislike.objects.get(user=current_user, post=post)
+        dislike.delete()
 
     return redirect('post_view', post_id=post_id)
