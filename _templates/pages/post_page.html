@@ -59,94 +59,84 @@
                       </div>
                       <!-- comment start -->
                       <div class="accordion" id="accordionExample">
-                         <div class="accordion-item border-0">
-                            <h2 class="accordion-header" id="headingOne">
-                               <div class="accordion-button collapsed d-flex justify-content-end" type="button"
-                                  data-bs-toggle="collapse" data-bs-target="#post1" aria-expanded="true"
-                                  aria-controls="post1">
-                                  <p class="m-0">2 comments</p>
-                               </div>
-                            </h2>
-                            <!-- comment and likes bar -->
-                            <div class="d-flex justify-content-around">
-                               <!-- like -->
-                               <div class="d-flex align-items-center justify-content-center dropdown-item rounded text-muted p-1"
-                                  type="button">
-                                  <i class="fas fa-thumbs-up me-3"></i>
-                                  <p class="m-0">Like</p>
-                               </div>
-                               <!-- comment -->
-                               <div class="d-flex align-items-center justify-content-center dropdown-item rounded text-muted p-1"
-                                  type="button" data-bs-toggle="collapse" data-bs-target="#post1" aria-expanded="true" aria-controls="post1">
-                                  <i class="fas fa-comment-alt me-3"></i>
-                                  <p class="m-0">Comment</p>
-                               </div>
-                            </div>
-                            <div id="post1" class="accordion-collapse collapse" aria-labelledby="headingOne"
-                               data-bs-parent="#accordionExample">
-                               <div class="accordion-body">
-                                  <!--comment 1 -->
-                                  <div class="d-flex align-items-center my-1">
-                                     <!-- avatar -->
-                                     <img src="https://source.unsplash.com/collection/happy-people" alt="avatar"
-                                        class="rounded-circle me-2" style="width: 38px; height: 38px; object-fit: cover;">
-                                     <div class="p-3 rounded w-100 comment__input">
-                                        <!-- menu -->
-                                        <div class="d-flex justify-content-end">
-                                           <i class="fas fa-ellipsis-h" type="button" data-bs-toggle="dropdown"
-                                              aria-expanded="false"></i>
-                                           <ul class="dropdown-menu border-0 shadow" aria-labelledby="post1Menu">
-                                              <li class="d-flex align-item-center">
-                                                 <a href="" class="dropdown-item d-flex align-items-center justify-content-around fs-7">
-                                                 Edit comment
-                                                 </a>
-                                              </li>
-                                              <li class="d-flex align-item-center">
-                                                 <a href="" class="dropdown-item d-flex align-items-center justify-content-around fs-7">
-                                                 Delete comment
-                                                 </a>
-                                              </li>
-                                           </ul>
+                                <div class="accordion-item border-0">
+                                    <h2 class="accordion-header" id="headingOne">
+                                        <div class="accordion-button collapsed d-flex justify-content-end" type="button"
+                                        data-bs-toggle="collapse" data-bs-target="#post{{ post.id }}" aria-expanded="true"
+                                        aria-controls="post{{ post.id }}">
+                                            <p class="m-0">2 comments</p>
                                         </div>
-                                        <!-- text -->
-                                        <p class="fw-bold m-0"></p>
-                                        <p class="m-0 fs-7 bg-gray p-2 rounded">
-                                           Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                                        </p>
-                                     </div>
-                                     <!-- comment text -->
-                                  </div>
-                                  <!--comment 2 -->
-                                  <div class="d-flex align-items-center my-1">
-                                     <!-- avatar -->
-                                     <img src="https://source.unsplash.com/random/1" alt="avatar"
-                                        class="rounded-circle me-2" style="width: 38px; height: 38px; object-fit: cover;">
-                                     <div class="p-3 rounded w-100 comment__input">
-                                        <!-- menu -->
-                                        <!-- text -->
-                                        <p class="fw-bold m-0"></p>
-                                        <p class="m-0 fs-7 bg-gray p-2 rounded">
-                                           Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                                        </p>
-                                     </div>
-                                     <!-- comment text -->
-                                  </div>
-                                  <!--create comment -->
-                                  <form class="d-flex my-1">
-                                     <!-- avatar -->
-                                     <div>
-                                        <img src="https://source.unsplash.com/collection/happy-people" alt="avatar"
-                                           class="rounded-circle me-2" style="width: 38px; height: 38px;
-                                           object-fit: cover">
-                                     </div>
-                                     <!-- input -->
-                                     <input type="text" class="form-control border-0 rounded-pill bg-gray"
-                                        placeholder="Write a comment">
-                                  </form>
-                               </div>
+                                    </h2>
+                                    <!-- comment and likes bar -->
+                                    <div class="d-flex justify-content-around">
+                                        <!-- like -->
+                                        <div class="d-flex align-items-center justify-content-center dropdown-item rounded text-muted p-1"
+                                             type="button">
+                                            <i class="fas fa-thumbs-up me-3"></i>
+                                            <p class="m-0">Like</p>
+                                        </div>
+                                        <!-- comment -->
+                                        <div class="d-flex align-items-center justify-content-center dropdown-item rounded text-muted p-1"
+                                             type="button" data-bs-toggle="collapse" data-bs-target="#post{{ post.id }}" aria-expanded="true" aria-controls="post{{ post.id }}">
+                                            <i class="fas fa-comment-alt me-3"></i>
+                                            <p class="m-0">Comment</p>
+                                        </div>
+                                    </div>
+                                    <div id="post{{ post.id }}" class="accordion-collapse collapse" aria-labelledby="headingOne"
+                                    data-bs-parent="#accordionExample">
+                                        <div class="accordion-body">
+                                            <!--comment -->
+                                            {% for comment in comments %}
+                                                {% if comment.post == post %}
+                                                    <div class="mt-1 rounded w-100 comment__input">
+                                                        <!-- menu -->
+                                                        <div class="d-flex justify-content-end">
+                                                            <i class="fas fa-ellipsis-h" type="button" data-bs-toggle="dropdown"
+                                                               aria-expanded="false"></i>
+                                                            <ul class="dropdown-menu border-0 shadow" aria-labelledby="post1Menu">
+                                                                <li class="d-flex align-item-center">
+                                                                    <a href="" class="dropdown-item d-flex align-items-center justify-content-around fs-7">
+                                                                        Edit comment
+                                                                    </a>
+                                                                </li>
+                                                                <li class="d-flex align-item-center">
+                                                                    <a href="" class="dropdown-item d-flex align-items-center justify-content-around fs-7">
+                                                                            Delete comment
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="d-flex align-items-center my-1">
+                                                            <!-- avatar -->
+                                                            <a href="{% url 'profile' comment.user.username %}">
+                                                                <img src="{{ comment.user.profile_img.url }}" alt="avatar"
+                                                                     class="rounded-circle me-2" style="width: 38px; height: 38px; object-fit: cover;">
+                                                            </a>
+                                                            <p class="fw-bold mx-1 mb-0">{{ comment.user.username }}</p>
+                                                                <p class="m-0 fs-7 bg-gray p-2 rounded my-auto">
+                                                                {{ comment.content }}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
+                                            {% endfor %}
+                                            <!--create comment -->
+                                            <form class="d-flex my-1 mt-5" action="{% url 'create_comment' post.id %}" method="POST">
+                                                {% csrf_token %}
+                                                <!-- avatar -->
+                                                <div>
+                                                    <img src="{{ current_user.profile_img.url }}" alt="avatar"
+                                                         class="rounded-circle me-2" style="width: 38px; height: 38px;
+                                                         object-fit: cover">
+                                                </div>
+                                                <!-- input -->
+                                                <input type="text" name="content" class="form-control border-0 rounded-pill bg-gray"
+                                                       placeholder="Write a comment">
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                         </div>
-                      </div>
                    </div>
                 </div>
              </div>
