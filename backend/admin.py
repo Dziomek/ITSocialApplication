@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import CustomUser, Profile, Post, Comment
+from .models import CustomUser, Profile, Post, Comment, Like, Dislike
 from django.contrib.auth.admin import UserAdmin
 
 
@@ -15,3 +15,5 @@ admin.site.register(CustomUser, UserConfig)
 admin.site.register(Profile)
 admin.site.register(Post)
 admin.site.register(Comment)
+admin.site.register(Like)
+admin.site.register(Dislike)

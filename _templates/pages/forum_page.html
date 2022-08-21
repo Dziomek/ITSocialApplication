@@ -89,13 +89,14 @@
                         <div class="position-relative mt-3 post__comment">
                             <!-- likes -->
                             <div class="d-flex align-items-center" style="height: 50px; z-index: 5;">
-                                <div class="me-2">
-                                    <i class="fas fa-thumbs-up text-primary"></i>
-                                    <i class="fab fa-gratipay text-danger"></i>
-                                    <i class="fas fa-grin-squint text-warning"></i>
+                                <div class="me-2 mt-1">
+                                    <a href="{% url 'like_post' post.id %}" class="text-decoration-none">
+                                        <i class="fa-solid fa-circle-chevron-up me-1 fs-3 text-dark"></i>
+                                    </a>
+                                    <i class="fa-solid fa-circle-chevron-down me-1 fs-3"></i>
                                 </div>
-                                <p class="m-0 text-muted fs-7">
-                                    John, Peter and 3 others
+                                <p class="m-0 text-primary fs-3">
+                                    {{ post.rating }}
                                 </p>
                             </div>
                             <!-- comment start -->

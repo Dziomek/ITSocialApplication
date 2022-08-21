@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib.auth.models import auth
-from .models import CustomUser, Profile, Post, Comment
+from .models import CustomUser, Profile, Post, Comment, Like, Dislike
 from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -173,6 +173,22 @@ def delete_comment(request, comment_id, post_id):
     if comment:
         comment.delete()
 
+    return redirect('post_view', post_id=post_id)
 
+
+@login_required(login_url='login')
+def like_post(request, post_id):
+    current_user = request.user
+    post = Post.objects.get(id=post_id)
+    if not Like.objects.filter(user=current_user, post=post):
+        post.rating += 1
+        post.save()
+        like = Like(user=current_user, post=post)
+        like.save()
+    else:
+        post.rating -= 1
+        post.save()
+        like = Like.objects.get(user=current_user, post=post)
+        like.delete()
 
     return redirect('post_view', post_id=post_id)

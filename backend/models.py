@@ -54,9 +54,20 @@ class Post(models.Model):
     picture = models.ImageField(blank=True, null=True)
     date = models.DateField(auto_now_add=True)
     number_of_comments = models.IntegerField(default=0)
+    rating = models.IntegerField(default=0)
 
 
 class Comment(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     content = models.TextField()
+
+
+class Like(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+
+
+class Dislike(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)

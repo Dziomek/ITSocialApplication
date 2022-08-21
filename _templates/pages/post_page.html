@@ -1,9 +1,10 @@
 {% extends 'pages/home_base.html' %}
+
 {% block post_view %}
-    <script src="/_static/js/post_page_script.js"></script>
+<script src="/_static/js/post_page_script.js"></script>
     <div class="container-fluid"  style="margin-top:150px">
        <div class="row justify-content-evenly">
-          <div class="col-lg-6">
+           <div class="col-lg-6">
              <div class="bg-white p-4 rounded shadow mt-3">
                 <!-- author info -->
                 <div class="d-flex justify-content-between">
@@ -49,12 +50,13 @@
                       <!-- likes -->
                       <div class="d-flex align-items-center position-relative" style="height: 50px; z-index: 5;">
                          <div class="me-2">
-                            <i class="fas fa-thumbs-up text-primary"></i>
-                            <i class="fab fa-gratipay text-danger"></i>
-                            <i class="fas fa-grin-squint text-warning"></i>
+                             <a href="{% url 'like_post' post.id %}" class="text-decoration-none">
+                                 <i class="fa-solid fa-circle-chevron-up me-1 fs-3 text-dark"></i>
+                             </a>
+                             <i class="fa-solid fa-circle-chevron-down me-1 fs-3"></i>
                          </div>
-                         <p class="m-0 text-muted fs-7">
-                            John, Peter and 3 others
+                         <p class="m-0 text-primary fs-3">
+                            {{ post.rating }}
                          </p>
                       </div>
                       <!-- comment start -->
