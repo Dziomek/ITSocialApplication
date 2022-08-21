@@ -88,7 +88,7 @@
                         <!-- like and comment -->
                         <div class="position-relative mt-3 post__comment">
                             <!-- likes -->
-                            <div class="d-flex align-items-center position-relative" style="height: 50px; z-index: 5;">
+                            <div class="d-flex align-items-center" style="height: 50px; z-index: 5;">
                                 <div class="me-2">
                                     <i class="fas fa-thumbs-up text-primary"></i>
                                     <i class="fab fa-gratipay text-danger"></i>
@@ -105,7 +105,7 @@
                                         <div class="accordion-button collapsed d-flex justify-content-end" type="button"
                                         data-bs-toggle="collapse" data-bs-target="#post{{ post.id }}" aria-expanded="true"
                                         aria-controls="post{{ post.id }}">
-                                            <p class="m-0">2 comments</p>
+                                            <p class="m-0">{{ post.number_of_comments }} comments</p>
                                         </div>
                                     </h2>
                                     <!-- comment and likes bar -->
@@ -143,7 +143,7 @@
                                                                         </a>
                                                                     </li>
                                                                     <li class="d-flex align-item-center">
-                                                                        <a href="" class="dropdown-item d-flex align-items-center justify-content-around fs-7">
+                                                                        <a href="{% url 'delete_comment' comment.id post.id %}" class="dropdown-item d-flex align-items-center justify-content-around fs-7">
                                                                             Delete comment
                                                                         </a>
                                                                     </li>

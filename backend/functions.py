@@ -1,3 +1,5 @@
+from .models import Post, Comment
+
 def make_birthday_date(year, month, day):
     match month:
         case 'January':
@@ -27,3 +29,11 @@ def make_birthday_date(year, month, day):
 
     return f'{year}-{month}-{day}'
 
+
+def get_number_of_comments():
+    posts = Post.objects.all()
+
+    for post in posts:
+        number_of_comments = Comment.objects.filter(post=post).count()
+        post.number_of_comments = number_of_comments
+        post.save()

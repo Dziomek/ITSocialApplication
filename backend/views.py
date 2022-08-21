@@ -5,7 +5,7 @@ from .models import CustomUser, Profile, Post, Comment
 from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .functions import make_birthday_date
+from .functions import make_birthday_date, get_number_of_comments
 
 
 # Create your views here.
@@ -104,6 +104,8 @@ def forum(request):
     user_profile = Profile.objects.get(user=current_user)
     comments = Comment.objects.all()
 
+    get_number_of_comments()
+
     return render(request, 'pages/forum_page.html', {'current_user': current_user,
                                                      'user_profile': user_profile,
                                                      'posts': posts,
@@ -130,6 +132,7 @@ def post_view(request, post_id):
     current_user = request.user
     post = Post.objects.get(id=post_id)
     comments = Comment.objects.all()
+
     return render(request, 'pages/post_page.html', {'post': post,
                                                     'current_user': current_user,
                                                     'comments': comments})
@@ -144,14 +147,32 @@ def delete_post(request, post_id):
 
     return redirect('forum')
 
-@login_required()
+
+@login_required(login_url='login')
 def create_comment(request, post_id):
 
     if request.method == 'POST':
         current_user = request.user
         post = Post.objects.get(id=post_id)
+        post.number_of_comments += 1
+        post.save()
         content = request.POST['content']
         comment = Comment(post=post, user=current_user, content=content)
         comment.save()
+
+    return redirect('post_view', post_id=post_id)
+
+
+@login_required(login_url='login')
+def delete_comment(request, comment_id, post_id):
+    current_user = request.user
+    post = Post.objects.get(id=post_id)
+    post.number_of_comments -= 1
+    post.save()
+    comment = Comment.objects.get(id=comment_id, user=current_user)
+    if comment:
+        comment.delete()
+
+
 
     return redirect('post_view', post_id=post_id)
