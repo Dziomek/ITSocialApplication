@@ -7,8 +7,8 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .functions import make_birthday_date, get_number_of_comments
 from annoying.functions import get_object_or_None
-
-
+from django.views.generic import ListView
+import json
 # Create your views here.
 
 
@@ -20,9 +20,11 @@ def start_route(request):
 def home(request):
     current_user = request.user
     user_profile = Profile.objects.get(user=current_user)
+    users = CustomUser.objects.all()
 
     return render(request, 'pages/home_page.html', {'current_user': current_user,
-                                                    'user_profile': user_profile})
+                                                    'user_profile': user_profile,
+                                                    'users': users})
 
 
 def login(request):
@@ -104,6 +106,7 @@ def forum(request):
     current_user = request.user
     user_profile = Profile.objects.get(user=current_user)
     comments = Comment.objects.all()
+    likes = Like.objects.all()
 
     get_number_of_comments()
 
@@ -111,6 +114,7 @@ def forum(request):
                                                      'user_profile': user_profile,
                                                      'posts': posts,
                                                      'comments': comments,
+                                                     'likes': likes
                                                      })
 
 @login_required(login_url='login')

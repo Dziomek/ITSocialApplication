@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title></title>
@@ -21,15 +21,18 @@
                 <div class="input-group m-4">
                     <span type="button" class="input-group-prepend d-none d-lg-block" id="searchMenu" data-bs-toggle="dropdown"
                           aria-expanded="false">
-                        <div class="input-group-text bg-gray border-0 rounded-pill" style="min-height: 50px; min-width: 250px; ">
+                        <div class="d-flex align-items-center" style="min-height: 50px; min-width: 250px; ">
                             <i class="fa-solid fa-magnifying-glass me-2 text-muted"></i>
-                            <p class="m-0 fs-7 text-muted">Search for users</p>
+                            <input type="text" class="form-control rounded bg-gray h-100" style="padding-top: 0.4rem" placeholder="Search for users...">
                         </div>
                     </span>
                     <div class="dropdown-menu" aria-labelledby="searchMenu">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <a class="dropdown-item" href="#">Something else here</a>
+                        {% for user in users %}
+                        <div class="d-flex">
+                            <img src="{{ user.profile_img.url }}" class="rounded-circle mx-2" alt="avatar" style="width: 38px; height: 38px;">
+                            <a class="dropdown-item" href="#">{{ user.username }}</a>
+                        </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
@@ -39,7 +42,7 @@
                 <div class="mx-4 nav__btn">
                     <a href="{% url 'home' %}">
                         <button class="btn px-4 border-0" id="homeButton">
-                            <i class="fa-solid fa-house fs-4 text-secondary" style="pointer-events: none"></i>
+                            <i class="fa-solid fa-desktop fs-4 text-secondary" style="pointer-events: none"></i>
                         </button>
                     </a>
                 </div>

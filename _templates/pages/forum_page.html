@@ -4,6 +4,10 @@
     {% include 'modals/add_post_modal.html' %}
     <link rel="stylesheet" href="/_static/css/forum_page_style.css">
     <script src="/_static/js/forum_page_script.js" defer></script>
+    <script>
+    const data = '{{ qs_json }}'
+    console.log(data)
+    </script>
     <div class="container-fluid"  style="margin-top:150px">
         <div class="row justify-content-evenly">
             <div class="col-lg-3">
@@ -91,10 +95,10 @@
                             <div class="d-flex align-items-center" style="height: 50px; z-index: 5;">
                                 <div class="me-2 mt-1">
                                     <a href="{% url 'like_post' post.id %}" class="text-decoration-none">
-                                        <i class="fa-solid fa-circle-chevron-up me-1 fs-3 text-dark"></i>
+                                        <i class="fa-solid fa-circle-chevron-up me-1 fs-3 text-dark like__icon"></i>
                                     </a>
                                     <a href="{% url 'dislike_post' post.id %}" class="text-decoration-none">
-                                        <i class="fa-solid fa-circle-chevron-down me-1 fs-3 text-dark"></i>
+                                        <i class="fa-solid fa-circle-chevron-down me-1 fs-3 text-dark dislike__icon"></i>
                                     </a>
                                 </div>
                                 <p class="m-0 text-primary fs-3">
@@ -114,11 +118,7 @@
                                     <!-- comment and likes bar -->
                                     <div class="d-flex justify-content-around">
                                         <!-- like -->
-                                        <div class="d-flex align-items-center justify-content-center dropdown-item rounded text-muted p-1"
-                                             type="button">
-                                            <i class="fas fa-thumbs-up me-3"></i>
-                                            <p class="m-0">Like</p>
-                                        </div>
+
                                         <!-- comment -->
                                         <div class="d-flex align-items-center justify-content-center dropdown-item rounded text-muted p-1"
                                              type="button" data-bs-toggle="collapse" data-bs-target="#post{{ post.id }}" aria-expanded="true" aria-controls="post{{ post.id }}">
