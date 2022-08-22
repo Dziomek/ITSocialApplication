@@ -21,17 +21,17 @@
                     <div class="row">
                         <div class="col">
                             <div class="mb-3">
-                                <input type="text" name="firstname" class="form-control" placeholder="First name">
+                                <input type="text" name="firstname" class="form-control" value="{{ current_user.firstname }}" placeholder="First name">
                             </div>
                         </div>
                         <div class="col">
                             <div class="mb-3">
-                                <input type="text" name="lastname" class="form-control" placeholder="Last name">
+                                <input type="text" name="lastname" class="form-control" value="{{ current_user.lastname }}" placeholder="Last name">
                             </div>
                         </div>
                     </div>
                     <div class="mb-3">
-                        <textarea name="bio" class="form-control rounded bg-gray h-100" style="padding-top: 0.4rem" placeholder="Bio"></textarea>
+                        <textarea name="bio" class="form-control rounded bg-gray h-100" value="{{ user_profile.bio }}" style="padding-top: 0.4rem" placeholder="Bio"></textarea>
                     </div>
                     <div class="row mb-3">
                         <span class="mb-1">Gender</span>
@@ -72,7 +72,7 @@
                     <div class="row">
                         <div class="col">
                             <div class="mb-3">
-                                <input type="text" name="location" class="form-control" placeholder="Location">
+                                <input type="text" name="location" value="{{ user_profile.location }}" class="form-control" placeholder="Location">
                             </div>
                         </div>
                     </div>

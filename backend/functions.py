@@ -44,11 +44,16 @@ def get_number_of_comments():
             post.save()
 
 
-def update_profile_parameters(user, profile_picture, last_name, first_name, gender, birthday, location):
+def update_user_parameters(user, profile_picture, last_name, first_name, gender, birthday):
     user.profile_img = profile_picture
-    user.last_name = last_name
-    user.first_name = first_name
+    user.lastname = last_name
+    user.firstname = first_name
     user.gender = gender
     user.birthday = birthday
-    user.location = location
     user.save()
+
+
+def update_profile_parameters(profile, bio, location):
+    profile.about = bio
+    profile.location = location
+    profile.save()

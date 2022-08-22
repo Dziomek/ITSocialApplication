@@ -36,6 +36,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     followers = models.IntegerField(default=0)
     following = models.IntegerField(default=0)
 
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username', 'firstname', 'lastname', 'birthday', 'gender']
 
