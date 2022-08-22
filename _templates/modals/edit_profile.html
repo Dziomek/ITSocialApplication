@@ -1,0 +1,85 @@
+<form action="{% url 'edit_profile' %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="modal fade" id="editProfileModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="d-flex align-items-center justify-content-center w-100">
+                        <h2 class="modal-title" id="exampleModalLabel">Edit profile</h2>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-1">
+                        <span class="mb-1">Profile picture</span>
+                        <div class="d-flex align-items-center mt-2">
+                            <img src="{{ current_user.profile_img.url }}" class="rounded-circle me-3" alt="avatar" style="width: 70px; height: 70px">
+                            <input type="file" name="image" class="form-control mt-1 h-50" id="customFile" />
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col">
+                            <div class="mb-3">
+                                <input type="text" name="firstname" class="form-control" placeholder="First name">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="mb-3">
+                                <input type="text" name="lastname" class="form-control" placeholder="Last name">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <textarea name="bio" class="form-control rounded bg-gray h-100" style="padding-top: 0.4rem" placeholder="Bio"></textarea>
+                    </div>
+                    <div class="row mb-3">
+                        <span class="mb-1">Gender</span>
+                        <div class="col">
+                            <div class="form-check">
+                                <input class="form-check-input" value="Male" type="radio" name="other" id="flexRadioDefault1" checked/>
+                                <label class="form-check-label" for="flexRadioDefault1"> Male </label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-check">
+                                <input class="form-check-input" value="Female" type="radio" name="other" id="flexRadioDefault1"/>
+                                <label class="form-check-label" for="flexRadioDefault1"> Female </label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-check">
+                                <input class="form-check-input" value="Other" type="radio" name="other" id="flexRadioDefault1"/>
+                                <label class="form-check-label" for="flexRadioDefault1"> Other </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <span class="mb-1">Date of birth</span>
+                        <div class="col">
+                            <select name="Year" class="form-select" onchange="addDays()">
+                            </select>
+                        </div>
+                        <div class="col">
+                            <select name="Month" class="form-select" onchange="addDays()">
+                            </select>
+                        </div>
+                        <div class="col">
+                            <select name="Day" class="form-select">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="mb-3">
+                                <input type="text" name="location" class="form-control" placeholder="Location">
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-secondary submit_btn w-100 my-4">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>

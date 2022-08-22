@@ -42,3 +42,13 @@ def get_number_of_comments():
         if post.number_of_comments != number_of_comments:
             post.number_of_comments = number_of_comments
             post.save()
+
+
+def update_profile_parameters(user, profile_picture, last_name, first_name, gender, birthday, location):
+    user.profile_img = profile_picture
+    user.last_name = last_name
+    user.first_name = first_name
+    user.gender = gender
+    user.birthday = birthday
+    user.location = location
+    user.save()

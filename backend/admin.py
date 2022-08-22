@@ -6,7 +6,7 @@ from django.contrib.auth.admin import UserAdmin
 class UserConfig(UserAdmin):
     ordering = ('id',)
 
-    list_display = ('id', 'email', 'username', 'is_active', 'gender', 'birthday')
+    list_display = ('id', 'email', 'username', 'is_active', 'gender', 'birthday', 'profile_img')
 
 
 # Register your models here.

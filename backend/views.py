@@ -5,7 +5,7 @@ from .models import CustomUser, Profile, Post, Comment, Like, Dislike, FollowRel
 from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .functions import make_birthday_date, get_number_of_comments
+from .functions import make_birthday_date, get_number_of_comments, update_profile_parameters
 from annoying.functions import get_object_or_None
 from django.views.generic import ListView
 import json
@@ -263,5 +263,25 @@ def follow_or_unfollow(request, username):
         current_user.save()
 
     return redirect('profile', username=user.username)
+
+@login_required(login_url='login')
+def edit_profile(request):
+    current_user = request.user
+    if request.method == 'POST':
+        profile_picture = request.FILES.get('image')
+        first_name = request.POST['firstname']
+        last_name = request.POST['lastname']
+        gender = request.POST['other']
+        year = request.POST['Year']
+        month = request.POST['Month']
+        day = request.POST['Day']
+        location = request.POST['Location']
+        birthday = make_birthday_date(year, month, day)
+        ##########################################################
+
+        update_profile_parameters(current_user, profile_picture, last_name, first_name, gender, birthday, location)
+
+    return redirect('profile', username=current_user.username)
+
 
 
