@@ -1,0 +1,34 @@
+
+
+    <div class="modal fade" id="followersModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="d-flex align-items-center justify-content-center w-100">
+                        <h2 class="modal-title" id="exampleModalLabel">Users that follow {{ searched_user.username }} </h2>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        {% for follow in follows %}
+                            {% if follow.followed_user == searched_user %}
+                                <a href="{% url 'profile' follow.follower.username %}" class="text-decoration-none">
+                                    <div class="d-flex text-dark mt-2">
+                                    <img src="{{ follow.follower.profile_img.url }}" class="rounded-circle" style="width: 38px; height: 38px; object-fit: cover" alt="">
+                                    <div class="d-flex justify-content-between w-100">
+                                        <p class="mx-3 fw-bold"> {{ follow.follower.username }} </p>
+                                        <div class="d-flex align-items-center">
+                                            <i class="fa-solid fa-user"></i>
+                                            <p class="mx-3 fw-bold"> Since </p>
+                                            <p class="mx-3 fw-bold"> {{ follow.since }} </p>
+                                        </div>
+                                    </div>
+                                </div></a>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

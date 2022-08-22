@@ -2,6 +2,8 @@
 
 
 {% block profile %}
+    {% include 'modals/followers_modal.html' %}
+    {% include 'modals/following_modal.html' %}
     <link rel="stylesheet" href="/_static/css/profile_page_style.css">
 
     <script src="/_static/js/profile_page_script.js" defer></script>
@@ -12,7 +14,9 @@
                 <div class="d-flex mx-3 justify-content-between align-items-center">
                     <h1 class="fs-0 fw-bold mt-3">{{ searched_user.firstname }} {{ searched_user.lastname }}</h1>
                     {% if current_user == searched_user %}
-                    <button type="button" class="btn btn-outline-info fs-7 h-50">Edit profile</button>
+                    <button type="button" class="btn btn-outline-info fs-7 h-50">Edit profile
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
                     {% endif %}
                 </div>
                 <div id ="followDiv" class="d-flex mx-3 justify-content-between align-items-center">
@@ -21,9 +25,14 @@
                 </div>
                 <hr>
                 <div class="d-flex justify-content-between">
-                    <div class="d-flex justify-content-evenly w-100">
-                        <h6 class="text-primary fs-0 fw-bold mt-3">{{ searched_user.followers }} followers</h6>
-                        <h6 class="text-primary fs-0 fw-bold mt-3">{{ searched_user.following }} following</h6>
+                    <div class="d-flex justify-content-evenly align-items-center w-100">
+                        <a href="" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#followersModal">
+                            <h6 class="text-primary fs-0 fw-bold mt-3">{{ searched_user.followers }} followers</h6>
+                        </a>
+                        <i class="fa-solid fa-users"></i>
+                        <a href="" class="text-decoration-none" data-bs-toggle="modal" data-bs-target="#followingModal">
+                            <h6 class="text-primary fs-0 fw-bold mt-3">{{ searched_user.following }} following</h6>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -66,6 +75,8 @@
         {% if current_user != searched_user %}
             let aButton = document.createElement('a')
             let button = document.createElement('button')
+            let i = document.createElement('i')
+            i.classList.add('fa-solid', 'fa-user', 'mx-1')
             button.classList.add('btn', 'fs-7', 'h-50')
             aButton.classList.add('text-decoration-none')
             aButton.href = '{% url 'follow_or_unfollow' searched_user.username %}'
@@ -76,7 +87,9 @@
                 {% endif %}
             {% endfor %}
             button.classList.add(classColor)
-            button.innerHTML = buttonText
+            button.innerText = buttonText
+            button.appendChild(i)
+
             aButton.appendChild(button)
             followDiv.appendChild(aButton)
             classColor = 'btn-outline-primary'
