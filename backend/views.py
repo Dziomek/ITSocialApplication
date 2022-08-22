@@ -91,13 +91,14 @@ def profile(request, username):
     searched_user = CustomUser.objects.get(username=username)
     searched_profile = Profile.objects.get(user=searched_user)
     posts = Post.objects.filter(user=searched_user)
-    print(posts)
+    users = CustomUser.objects.all()
 
     return render(request, 'pages/profile_page.html', {'current_user': current_user,
                                                        'user_profile': user_profile,
                                                        'searched_user': searched_user,
                                                        'searched_profile': searched_profile,
-                                                       'posts': posts})
+                                                       'posts': posts,
+                                                       'users': users})
 
 
 @login_required(login_url='login')
@@ -107,6 +108,7 @@ def forum(request):
     user_profile = Profile.objects.get(user=current_user)
     comments = Comment.objects.all()
     likes = Like.objects.all()
+    users = CustomUser.objects.all()
 
     get_number_of_comments()
 
@@ -114,7 +116,8 @@ def forum(request):
                                                      'user_profile': user_profile,
                                                      'posts': posts,
                                                      'comments': comments,
-                                                     'likes': likes
+                                                     'likes': likes,
+                                                     'users': users
                                                      })
 
 @login_required(login_url='login')
