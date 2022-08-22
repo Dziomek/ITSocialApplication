@@ -269,7 +269,10 @@ def edit_profile(request):
     current_user = request.user
     user_profile = Profile.objects.get(user=current_user)
     if request.method == 'POST':
-        profile_picture = request.FILES.get('image')
+        if request.FILES.get('image'):
+            profile_picture = request.FILES.get('image')
+        else:
+            profile_picture = current_user.profile_img
         firstname = request.POST['firstname']
         lastname = request.POST['lastname']
         gender = request.POST['other']
