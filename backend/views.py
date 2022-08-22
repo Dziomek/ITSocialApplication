@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib.auth.models import auth
-from .models import CustomUser, Profile, Post, Comment, Like, Dislike
+from .models import CustomUser, Profile, Post, Comment, Like, Dislike, FollowRelation
 from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -238,3 +238,28 @@ def dislike_post(request, post_id):
         dislike.delete()
 
     return redirect('post_view', post_id=post_id)
+
+@login_required(login_url='login')
+def follow_or_unfollow(request, username):
+    current_user = request.user
+    user = CustomUser.objects.get(username=username)
+    if get_object_or_None(FollowRelation, follower=current_user, followed_user=user):
+        ############# UNFOLLOW
+        current_user.following -= 1
+        user.followers -= 1
+        follow = FollowRelation.objects.get(follower=current_user, followed_user=user)
+        follow.delete()
+        user.save()
+        current_user.save()
+    else:
+        ############# FOLLOW
+        current_user.following += 1
+        user.followers += 1
+        follow = FollowRelation(follower=current_user, followed_user=user)
+        follow.save()
+        user.save()
+        current_user.save()
+
+    return redirect('profile', username=user.username)
+
+

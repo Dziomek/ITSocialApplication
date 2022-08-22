@@ -8,9 +8,28 @@
     <div class="container-fluid d-flex flex-row justify-content-center" style="margin-top:150px">
         <div class="shadow rounded">
             <img id="profilePicture" src="{{ searched_user.profile_img.url }}" class="rounded-circle m-5" alt="avatar">
-            <div class="text-center">
-                <h1 class="fs-0 fw-bold mt-3">{{ searched_user.firstname }} {{ searched_user.lastname }}</h1>
-                <h3 class="text-secondary fs-0 fw-bold mt-3">{{ searched_user.username }}</h3>
+            <div>
+                <div class="d-flex mx-3 justify-content-between align-items-center">
+                    <h1 class="fs-0 fw-bold mt-3">{{ searched_user.firstname }} {{ searched_user.lastname }}</h1>
+                    {% if current_user == searched_user %}
+                    <button type="button" class="btn btn-outline-info fs-7 h-50">Edit profile</button>
+                    {% endif %}
+                </div>
+                <div class="d-flex mx-3 justify-content-between align-items-center">
+                    <h3 class="text-secondary fs-0 fw-bold mt-3">{{ searched_user.username }}</h3>
+                    {% if current_user != searched_user %}
+                        <a href="{% url 'follow_or_unfollow' searched_user.username %}" class="text-decoration-none">
+                            <button type="button" class="btn btn-outline-primary fs-7 h-50">Follow</button>
+                        </a>
+                    {% endif %}
+                </div>
+                <hr>
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex justify-content-evenly w-100">
+                        <h6 class="text-primary fs-0 fw-bold mt-3">{{ searched_user.followers }} followers</h6>
+                        <h6 class="text-primary fs-0 fw-bold mt-3">{{ searched_user.following }} following</h6>
+                    </div>
+                </div>
             </div>
             <div class="d-flex flex-row p-2 mt-4 align-items-center">
                 <i class="fa-solid fa-location-dot fs-3"></i>

@@ -1,31 +1,35 @@
 from .models import Post, Comment
 
+
 def make_birthday_date(year, month, day):
     match month:
         case 'January':
-            month = '1'
+            month = '01'
         case 'February':
-            month = '2'
+            month = '02'
         case 'March':
-            month = '3'
+            month = '03'
         case 'April':
-            month = '4'
+            month = '04'
         case 'May':
-            month = '5'
+            month = '05'
         case 'June':
-            month = '6'
+            month = '06'
         case 'July':
-            month = '7'
+            month = '07'
         case 'August':
-            month = '8'
+            month = '08'
         case 'September':
-            month = '9'
+            month = '09'
         case 'October':
             month = '10'
         case 'November':
             month = '11'
         case 'December':
             month = '12'
+
+    if int(day) < 10:
+        day = '0' + str(day)
 
     return f'{year}-{month}-{day}'
 
@@ -35,5 +39,6 @@ def get_number_of_comments():
 
     for post in posts:
         number_of_comments = Comment.objects.filter(post=post).count()
-        post.number_of_comments = number_of_comments
-        post.save()
+        if post.number_of_comments != number_of_comments:
+            post.number_of_comments = number_of_comments
+            post.save()

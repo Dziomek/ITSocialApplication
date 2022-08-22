@@ -33,6 +33,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     objects = CustomUserManager()
     profile_img = models.ImageField(upload_to='profile_images', default='blank_profile_picture.png')
+    followers = models.IntegerField(default=0)
+    following = models.IntegerField(default=0)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username', 'firstname', 'lastname', 'birthday', 'gender']
