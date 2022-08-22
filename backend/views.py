@@ -92,13 +92,15 @@ def profile(request, username):
     searched_profile = Profile.objects.get(user=searched_user)
     posts = Post.objects.filter(user=searched_user)
     users = CustomUser.objects.all()
+    follows = FollowRelation.objects.all()
 
     return render(request, 'pages/profile_page.html', {'current_user': current_user,
                                                        'user_profile': user_profile,
                                                        'searched_user': searched_user,
                                                        'searched_profile': searched_profile,
                                                        'posts': posts,
-                                                       'users': users})
+                                                       'users': users,
+                                                       'follows': follows})
 
 
 @login_required(login_url='login')

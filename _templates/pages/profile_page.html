@@ -15,13 +15,9 @@
                     <button type="button" class="btn btn-outline-info fs-7 h-50">Edit profile</button>
                     {% endif %}
                 </div>
-                <div class="d-flex mx-3 justify-content-between align-items-center">
+                <div id ="followDiv" class="d-flex mx-3 justify-content-between align-items-center">
                     <h3 class="text-secondary fs-0 fw-bold mt-3">{{ searched_user.username }}</h3>
-                    {% if current_user != searched_user %}
-                        <a href="{% url 'follow_or_unfollow' searched_user.username %}" class="text-decoration-none">
-                            <button type="button" class="btn btn-outline-primary fs-7 h-50">Follow</button>
-                        </a>
-                    {% endif %}
+
                 </div>
                 <hr>
                 <div class="d-flex justify-content-between">
@@ -62,5 +58,30 @@
             </div>
         </div>
     </div>
+    <script>
+        let followDiv = document.getElementById('followDiv')
+        let classColor = 'btn-outline-primary'
+        let buttonText = 'Follow'
+
+        {% if current_user != searched_user %}
+            let aButton = document.createElement('a')
+            let button = document.createElement('button')
+            button.classList.add('btn', 'fs-7', 'h-50')
+            aButton.classList.add('text-decoration-none')
+            aButton.href = '{% url 'follow_or_unfollow' searched_user.username %}'
+            {% for follow in follows %}
+                {% if follow.follower == current_user and follow.followed_user == searched_user %}
+                    classColor = 'btn-outline-danger'
+                    buttonText = 'Unfollow'
+                {% endif %}
+            {% endfor %}
+            button.classList.add(classColor)
+            button.innerHTML = buttonText
+            aButton.appendChild(button)
+            followDiv.appendChild(aButton)
+            classColor = 'btn-outline-primary'
+            buttonText = 'Follow'
+        {% endif %}
+    </script>
 
 {% endblock %}
