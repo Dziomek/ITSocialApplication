@@ -51,10 +51,10 @@
                       <div class="d-flex align-items-center position-relative" style="height: 50px; z-index: 5;">
                          <div class="me-2">
                              <a href="{% url 'like_post' post.id %}" class="text-decoration-none">
-                                 <i class="fa-solid fa-circle-chevron-up me-1 fs-3 text-dark"></i>
+                                 <i id="{{ post.id }}LikeButton" class="fa-solid fa-circle-chevron-up me-1 fs-3"></i>
                              </a>
                              <a href="{% url 'dislike_post' post.id %}" class="text-decoration-none">
-                                 <i class="fa-solid fa-circle-chevron-down me-1 fs-3 text-dark"></i>
+                                 <i id="{{ post.id }}DislikeButton" class="fa-solid fa-circle-chevron-down me-1 fs-3"></i>
                              </a>
                          </div>
                          <p class="m-0 text-primary fs-3">
@@ -144,4 +144,24 @@
           </div>
        </div>
     </div>
+    <script>
+        let color = 'text-dark'
+        let like_element = document.getElementById('{{ post.id }}LikeButton')
+        let dislike_element = document.getElementById('{{ post.id }}DislikeButton')
+            {% for like in likes %}
+                {% if like.user == current_user and like.post == post %}
+                    color = 'text-primary'
+                    console.log('znalazlem like, zmienilem kolor')
+                {% endif %}
+            {% endfor %}
+        like_element.classList.add(color)
+        color = 'text-dark'
+            {% for dislike in dislikes %}
+                {% if dislike.user == current_user and dislike.post == post %}
+                    color = 'text-primary'
+                    console.log('znalazlem dislike, zmienilem kolor')
+                {% endif %}
+            {% endfor %}
+        dislike_element.classList.add(color)
+    </script>
 {% endblock %}

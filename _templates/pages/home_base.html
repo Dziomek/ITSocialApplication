@@ -108,7 +108,6 @@
     input.addEventListener('keyup', e=> {
         results.innerHTML = ''
         results.appendChild(start_div)
-
         {% for user in users %}
             if (e.target.value) {
                 if ('{{ user.username }}'.includes(e.target.value)) {

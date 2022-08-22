@@ -79,3 +79,11 @@ class Dislike(models.Model):
 
     def __str__(self):
         return self.user.username + ' ' + str(self.post.id)
+
+
+class FollowRelation(models.Model):
+    follower = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='follower')
+    followed_user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='followed_user')
+
+    def __str__(self):
+        return 'follower ' + self.follower.username + ' followed ' + str(self.followed_user.username)

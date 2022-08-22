@@ -95,10 +95,10 @@
                             <div class="d-flex align-items-center" style="height: 50px; z-index: 5;">
                                 <div class="me-2 mt-1">
                                     <a href="{% url 'like_post' post.id %}" class="text-decoration-none">
-                                        <i class="fa-solid fa-circle-chevron-up me-1 fs-3 text-dark like__icon"></i>
+                                        <i id="{{ post.id }}LikeButton" class="fa-solid fa-circle-chevron-up me-1 fs-3 like__icon"></i>
                                     </a>
                                     <a href="{% url 'dislike_post' post.id %}" class="text-decoration-none">
-                                        <i class="fa-solid fa-circle-chevron-down me-1 fs-3 text-dark dislike__icon"></i>
+                                        <i id="{{ post.id }}DislikeButton" class="fa-solid fa-circle-chevron-down me-1 fs-3 dislike__icon"></i>
                                     </a>
                                 </div>
                                 <p class="m-0 text-primary fs-3">
@@ -194,4 +194,28 @@
             </div>
         </div>
     </div>
+    <script>
+        let color = 'text-dark'
+        let like_element
+        let dislike_element
+        {% for post in posts %}
+            like_element = document.getElementById('{{ post.id }}LikeButton')
+            {% for like in likes %}
+                {% if like.user == current_user and like.post == post %}
+                    color = 'text-primary'
+                    console.log('znalazlem like, zmienilem kolor')
+                {% endif %}
+            {% endfor %}
+            like_element.classList.add(color)
+            color = 'text-dark'
+            dislike_element = document.getElementById('{{ post.id }}DislikeButton')
+            {% for dislike in dislikes %}
+                {% if dislike.user == current_user and dislike.post == post %}
+                    color = 'text-primary'
+                    console.log('znalazlem dislike, zmienilem kolor')
+                {% endif %}
+            {% endfor %}
+            dislike_element.classList.add(color)
+        {% endfor %}
+    </script>
 {% endblock %}

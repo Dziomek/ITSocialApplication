@@ -108,6 +108,7 @@ def forum(request):
     user_profile = Profile.objects.get(user=current_user)
     comments = Comment.objects.all()
     likes = Like.objects.all()
+    dislikes = Dislike.objects.all()
     users = CustomUser.objects.all()
 
     get_number_of_comments()
@@ -117,7 +118,8 @@ def forum(request):
                                                      'posts': posts,
                                                      'comments': comments,
                                                      'likes': likes,
-                                                     'users': users
+                                                     'users': users,
+                                                     'dislikes': dislikes
                                                      })
 
 @login_required(login_url='login')
@@ -140,10 +142,14 @@ def post_view(request, post_id):
     current_user = request.user
     post = Post.objects.get(id=post_id)
     comments = Comment.objects.all()
+    likes = Like.objects.all()
+    dislikes = Dislike.objects.all()
 
     return render(request, 'pages/post_page.html', {'post': post,
                                                     'current_user': current_user,
                                                     'comments': comments,
+                                                    'likes': likes,
+                                                    'dislikes': dislikes
                                                     })
 
 
