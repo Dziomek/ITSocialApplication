@@ -11,7 +11,7 @@
             <img id="profilePicture" src="{{ searched_user.profile_img.url }}" class="rounded-circle m-5" alt="avatar">
             <div>
                 <div class="d-flex mx-3 justify-content-between align-items-center">
-                    <h1 class="fs-0 fw-bold mt-3">{{ searched_user.firstname }} {{ searched_user.lastname }}</h1>
+                    <h3 class="fs-0 fw-bold mt-3">{{ searched_user.firstname }} {{ searched_user.lastname }}</h3>
                     {% if current_user == searched_user %}
                     <button type="button" class="btn btn-outline-info fs-7 h-50" data-bs-toggle="modal" data-bs-target="#editProfileModal">Edit profile
                         <i class="fa-solid fa-pen-to-square"></i>
@@ -19,7 +19,7 @@
                     {% endif %}
                 </div>
                 <div id ="followDiv" class="d-flex mx-3 justify-content-between align-items-center">
-                    <h3 class="text-secondary fs-0 fw-bold mt-3">{{ searched_user.username }}</h3>
+                    <h5 class="text-secondary fs-0 fw-bold mt-3">{{ searched_user.username }}</h5>
                 </div>
                 <hr>
                 <div class="d-flex justify-content-between">
@@ -99,6 +99,7 @@
             const yearSelect = document.getElementsByName("Year")[0]
             for (let i=1900; i<=2022; i++) {
                 const option = document.createElement('option')
+                option.classList.add('years__option')
                 option.value = String(i)
                 option.innerText = String(i)
                 yearSelect.appendChild(option)
@@ -111,6 +112,7 @@
 
             for (const month of months) {
                 const option = document.createElement('option')
+                option.classList.add('months__option')
                 option.value = month
                 option.innerText = month
                 monthsSelect.appendChild(option)
@@ -147,6 +149,7 @@
             }
             for(let i=1; i<=daysToCreate; i++) {
                 const option = document.createElement('option')
+                option.classList.add('days__option')
                 option.value = String(i)
                 option.innerText = String(i)
                 daySelect.appendChild(option)
@@ -164,10 +167,97 @@
             homeParent.style.border = 'none'
             forumParent.style.border = 'none'
         }
+
+        function mapMonth(month) {
+            let number
+            switch(month) {
+                case 'January':
+                    number = '01'
+                    break
+                case 'February':
+                    number = '02'
+                    break
+                case 'March':
+                    number = '03'
+                    break
+                case 'April':
+                    number = '04'
+                    break
+                case 'May':
+                    number = '05'
+                    break
+                case 'June':
+                    number = '06'
+                    break
+                case 'July':
+                    number = '07'
+                    break
+                case 'August':
+                    number = '08'
+                    break
+                case 'September':
+                    number = '09'
+                    break
+                case 'October':
+                    number = '10'
+                    break
+                case 'November':
+                    number = '11'
+                    break
+                case 'December':
+                    number = '12'
+                    break
+            }
+        }
+
+        function setBirthday() {
+            const daySelect = document.getElementsByName("Day")[0]
+            const monthSelect = document.getElementsByName("Month")[0]
+            const yearSelect = document.getElementsByName("Year")[0]
+            const dayOptions = document.getElementsByClassName('days__option')
+            console.log(yearSelect, daySelect, monthSelect)
+            console.log({{ user_profile.day }})
+            console.log('{{ user_profile.month }}')
+            console.log({{ user_profile.year }})
+            console.log(typeof({{ user_profile.year }}))
+
+            for (const option of dayOptions) {
+                if (option.value === '{{ user_profile.day }}') {
+                    daySelect.value = '{{ user_profile.day }}'
+                }
+            }
+            const monthOptions = document.getElementsByClassName('months__option')
+            for (const option of monthOptions) {
+                if (option.value === '{{ user_profile.month }}') {
+                    monthSelect.value = '{{ user_profile.month }}'
+                }
+            }
+            const yearOptions = document.getElementsByClassName('years__option')
+            for (const option2 of yearOptions) {
+                if (option2.value === '{{ user_profile.year }}') {
+                    yearSelect.value = {{ user_profile.year }}
+                }
+            }
+        }
+
+        function setInputs() {
+            const inputs = document.getElementsByClassName('form-check-input')
+            console.log(inputs)
+            for (input of inputs) {
+                if (input.value === '{{ current_user.gender }}') {
+                    input.checked = true
+                }
+                else {
+                    input.checked = false
+                }
+            }
+        }
         setProfile()
         addYears()
         addMonths()
         addDays()
+        setBirthday()
+        setInputs()
 
     </script>
 

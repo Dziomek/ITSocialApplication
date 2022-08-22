@@ -68,7 +68,7 @@ def register(request):
                     user = CustomUser.objects.create_user(email=email, username=username, firstname=first_name,
                                                           lastname=last_name, birthday=birthday, gender=gender,
                                                           password=password)
-                    profile = Profile(user=user)
+                    profile = Profile(user=user, day=day, month=month, year=year)
                     profile.save()
 
                     messages.info(request, "User created successfully")
@@ -281,7 +281,7 @@ def edit_profile(request):
         ##########################################################
         location = request.POST['location']
         bio = request.POST['bio']
-        update_profile_parameters(user_profile, bio, location)
+        update_profile_parameters(user_profile, bio, location, day, month, year)
 
     return redirect('profile', username=current_user.username)
 

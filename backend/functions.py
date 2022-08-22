@@ -53,7 +53,10 @@ def update_user_parameters(user, profile_picture, last_name, first_name, gender,
     user.save()
 
 
-def update_profile_parameters(profile, bio, location):
+def update_profile_parameters(profile, bio, location, day, month, year):
     profile.about = bio
     profile.location = location
+    profile.day = day
+    profile.month = month
+    profile.year = year
     profile.save()
