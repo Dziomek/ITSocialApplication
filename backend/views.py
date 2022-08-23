@@ -22,11 +22,13 @@ def home(request):
     user_profile = Profile.objects.get(user=current_user)
     users = CustomUser.objects.all()
     notifications = Notification.objects.all()
+    notifications_number = Notification.objects.filter(to_user=current_user).count()
 
     return render(request, 'pages/home_page.html', {'current_user': current_user,
                                                     'user_profile': user_profile,
                                                     'users': users,
-                                                    'notifications': notifications})
+                                                    'notifications': notifications,
+                                                    'notifications_number': notifications_number})
 
 
 def login(request):
@@ -117,7 +119,10 @@ def forum(request):
     dislikes = Dislike.objects.all()
     users = CustomUser.objects.all()
     notifications = Notification.objects.all()
+    notifications_number = Notification.objects.filter(to_user=current_user).count()
+
     get_number_of_comments()
+
 
     return render(request, 'pages/forum_page.html', {'current_user': current_user,
                                                      'user_profile': user_profile,
@@ -127,6 +132,7 @@ def forum(request):
                                                      'users': users,
                                                      'dislikes': dislikes,
                                                      'notifications': notifications,
+                                                     'notifications_number': notifications_number
                                                      })
 
 @login_required(login_url='login')
@@ -158,13 +164,16 @@ def post_view(request, post_id):
     likes = Like.objects.all()
     dislikes = Dislike.objects.all()
     notifications = Notification.objects.all()
+    notifications_number = Notification.objects.filter(to_user=current_user).count()
+
 
     return render(request, 'pages/post_page.html', {'post': post,
                                                     'current_user': current_user,
                                                     'comments': comments,
                                                     'likes': likes,
                                                     'dislikes': dislikes,
-                                                    'notifications': notifications
+                                                    'notifications': notifications,
+                                                    'notifications_number': notifications_number
                                                     })
 
 @login_required(login_url='login')
