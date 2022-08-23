@@ -93,8 +93,8 @@ def logout(request):
 @login_required(login_url='login')
 def profile(request, username):
     current_user = request.user
-    user_profile = Profile.objects.get(user=current_user)
     searched_user = CustomUser.objects.get(username=username)
+    user_profile = Profile.objects.get(user=searched_user)
     searched_profile = Profile.objects.get(user=searched_user)
     posts = Post.objects.filter(user=searched_user)
     users = CustomUser.objects.all()
