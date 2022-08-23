@@ -11,7 +11,14 @@
     <div class="container-fluid"  style="margin-top:150px">
         <div class="row justify-content-evenly">
             <div class="col-lg-3">
-
+                <div class="d-flex justify-content-center overflow-auto">
+                    <div id="usersYouCanFollow" class="w-75 bg-white rounded shadow">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <p class="m-0 text-muted fs-5">Users you can follow</p>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
             </div>
             <div class="col-lg-6">
                 <!-- post creation -->
@@ -218,5 +225,64 @@
             dislike_element.classList.add(color)
             color = 'text-dark'
         {% endfor %}
+
+        function usersYouCanFollow() {
+            let canDisplay = true
+            const div = document.getElementById('usersYouCanFollow')
+            {% for user in users %}
+                {% if user != current_user %}
+                    {% for follow in follows %}
+                        {% if follow.follower == current_user and follow.followed_user == user %}
+                            canDisplay = false
+                        {% endif %}
+                    {% endfor %}
+                    console.log('{{ user.username }}', canDisplay)
+                    if (canDisplay && '{{ user.username }}' !== 'a') {
+                        const div1 = document.createElement('div')
+                        div1.classList.add('p-1')
+                        const div2 = document.createElement('div')
+                        div2.classList.add('d-flex', 'align-items-center', 'mb-1')
+                        const div3 = document.createElement('div')
+                        div3.classList.add('mx-1')
+                        const div4 = document.createElement('div')
+                        div4.classList.add('mx-1', 'my-auto', 'w-50')
+                        const div5 = document.createElement('div')
+                        div5.classList.add('d-flex', 'justify-content-end', 'w-100', 'mx-3')
+                        const a1 = document.createElement('a')
+                        a1.href = '{% url 'profile' user.username %}'
+                        const p1 = document.createElement('p')
+                        p1.classList.add('m-0', 'text-dark')
+                        p1.innerHTML = '{{ user.firstname }} ' + '{{ user.lastname }}'
+                        const p2 = document.createElement('p')
+                        p2.classList.add('m-0', 'text-muted')
+                        p1.innerHTML = '{{ user.username }}'
+                        const button = document.createElement('button')
+                        button.classList.add('btn', 'fs-7', 'h-100', 'btn-outline-primary', 'btn-sm')
+                        button.innerHTML = 'Follow'
+                        const a2 = document.createElement('a')
+                        a2.classList.add('text-decoration-none')
+                        a2.href = '{% url 'follow_or_unfollow' user.username %}'
+                        const img = document.createElement('img')
+                        img.style = "width: 38px; height: 38px; object-fit: cover"
+                        img.classList.add('rounded-circle')
+                        img.src = '{{ user.profile_img.url }}'
+                        a2.appendChild(button)
+                        a1.appendChild(img)
+                        div3.appendChild(a1)
+                        div4.appendChild(p1)
+                        div4.appendChild(p2)
+                        div5.appendChild(a2)
+                        div2.appendChild(div3)
+                        div2.appendChild(div4)
+                        div2.appendChild(div5)
+                        div1.appendChild(div2)
+                        div.appendChild(div1)
+                    }
+                {% endif %}
+                canDisplay = true
+            {% endfor %}
+        }
+
+        usersYouCanFollow()
     </script>
 {% endblock %}

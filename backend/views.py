@@ -21,14 +21,16 @@ def home(request):
     current_user = request.user
     user_profile = Profile.objects.get(user=current_user)
     users = CustomUser.objects.all()
-    notifications = Notification.objects.all()
+    notifications = Notification.objects.all().order_by('-id')
     notifications_number = Notification.objects.filter(to_user=current_user).count()
+    follows = FollowRelation.objects.all()
 
     return render(request, 'pages/home_page.html', {'current_user': current_user,
                                                     'user_profile': user_profile,
                                                     'users': users,
                                                     'notifications': notifications,
-                                                    'notifications_number': notifications_number})
+                                                    'notifications_number': notifications_number,
+                                                    'follows': follows})
 
 
 def login(request):
@@ -100,6 +102,7 @@ def profile(request, username):
     notifications = Notification.objects.all()
     notifications_number = Notification.objects.filter(to_user=current_user).count()
 
+
     return render(request, 'pages/profile_page.html', {'current_user': current_user,
                                                        'user_profile': user_profile,
                                                        'searched_user': searched_user,
@@ -122,7 +125,7 @@ def forum(request):
     users = CustomUser.objects.all()
     notifications = Notification.objects.all()
     notifications_number = Notification.objects.filter(to_user=current_user).count()
-
+    follows = FollowRelation.objects.all()
     get_number_of_comments()
 
 
@@ -134,7 +137,8 @@ def forum(request):
                                                      'users': users,
                                                      'dislikes': dislikes,
                                                      'notifications': notifications,
-                                                     'notifications_number': notifications_number
+                                                     'notifications_number': notifications_number,
+                                                     'follows': follows
                                                      })
 
 @login_required(login_url='login')
