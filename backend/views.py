@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib.auth.models import auth
-from .models import CustomUser, Profile, Post, Comment, Like, Dislike, FollowRelation
+from .models import CustomUser, Profile, Post, Comment, Like, Dislike, FollowRelation, Notification
 from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -21,10 +21,12 @@ def home(request):
     current_user = request.user
     user_profile = Profile.objects.get(user=current_user)
     users = CustomUser.objects.all()
+    notifications = Notification.objects.all()
 
     return render(request, 'pages/home_page.html', {'current_user': current_user,
                                                     'user_profile': user_profile,
-                                                    'users': users})
+                                                    'users': users,
+                                                    'notifications': notifications})
 
 
 def login(request):
@@ -93,6 +95,7 @@ def profile(request, username):
     posts = Post.objects.filter(user=searched_user)
     users = CustomUser.objects.all()
     follows = FollowRelation.objects.all()
+    notifications = Notification.objects.all()
 
     return render(request, 'pages/profile_page.html', {'current_user': current_user,
                                                        'user_profile': user_profile,
@@ -100,7 +103,8 @@ def profile(request, username):
                                                        'searched_profile': searched_profile,
                                                        'posts': posts,
                                                        'users': users,
-                                                       'follows': follows})
+                                                       'follows': follows,
+                                                       'notifications': notifications})
 
 
 @login_required(login_url='login')
@@ -112,7 +116,7 @@ def forum(request):
     likes = Like.objects.all()
     dislikes = Dislike.objects.all()
     users = CustomUser.objects.all()
-
+    notifications = Notification.objects.all()
     get_number_of_comments()
 
     return render(request, 'pages/forum_page.html', {'current_user': current_user,
@@ -121,7 +125,8 @@ def forum(request):
                                                      'comments': comments,
                                                      'likes': likes,
                                                      'users': users,
-                                                     'dislikes': dislikes
+                                                     'dislikes': dislikes,
+                                                     'notifications': notifications,
                                                      })
 
 @login_required(login_url='login')
@@ -132,10 +137,16 @@ def add_post(request):
         topic = request.POST['topic']
         content = request.POST['content']
         picture = request.POST['picture']
-
         if content:
             post = Post(user=current_user, topic=topic, content=content, picture=picture)
             post.save()
+            follows = FollowRelation.objects.all()
+            if follows:
+                for follow in follows:
+                    if follow.followed_user == current_user:
+                        notification = Notification(from_user=current_user, to_user=follow.follower, type='post',
+                                                    post=post)
+                        notification.save()
     return redirect('forum')
 
 
@@ -146,14 +157,15 @@ def post_view(request, post_id):
     comments = Comment.objects.all()
     likes = Like.objects.all()
     dislikes = Dislike.objects.all()
+    notifications = Notification.objects.all()
 
     return render(request, 'pages/post_page.html', {'post': post,
                                                     'current_user': current_user,
                                                     'comments': comments,
                                                     'likes': likes,
-                                                    'dislikes': dislikes
+                                                    'dislikes': dislikes,
+                                                    'notifications': notifications
                                                     })
-
 
 @login_required(login_url='login')
 def delete_post(request, post_id):
@@ -255,6 +267,8 @@ def follow_or_unfollow(request, username):
         current_user.save()
     else:
         ############# FOLLOW
+        notification = Notification(from_user=current_user, to_user=user, type='follow')
+        notification.save()
         current_user.following += 1
         user.followers += 1
         follow = FollowRelation(follower=current_user, followed_user=user)

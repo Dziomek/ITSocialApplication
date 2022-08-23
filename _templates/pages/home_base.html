@@ -45,19 +45,51 @@
                 </div>
                 <div class="mx-4 nav__btn">
                     <a href="{% url 'forum' %}">
-                        <button class="btn px-4 border-0" id="forumButton">
+                        <button id="forumButton" class="btn px-4 border-0">
                             <i class="fa-solid fa-book fs-4 text-secondary" style="pointer-events: none"></i>
                         </button>
                     </a>
                 </div>
-                <div class="mx-4 nav__btn">
-                    <button type="button" class="btn px-4 border-0">
-                        <i class="fa-solid fa-bell fs-4 text-secondary" style="pointer-events: none">
-                             <span class="badge bg-info">4</span>
-                        </i>
-                    </button>
+                <div class="dropdown">
+                    <div id="notificationButton" type="button" class="mx-4 nav__btn" data-bs-toggle="dropdown" aria-expanded="false">
+                        <button type="button" class="btn px-4 border-0">
+                            <i class="fa-solid fa-bell fs-4 text-secondary" style="pointer-events: none">
+                                 <span class="badge bg-info">4</span>
+                            </i>
+                        </button>
+                    </div>
+                    <div class="dropdown-menu" aria-labelledby="notificationButton" style="width:300px">
+                        <div class="d-flex justify-content-center">
+                            <p class="text-muted">Notifications</p>
+                        </div>
+                        {% for notification in notifications %}
+                            {% if notification.to_user == current_user %}
+                                <div class="btn btn-light d-flex align-items-center">
+                                    <div class="profile mx-1">
+                                        <a href="{% url 'profile' notification.from_user.username %}"><img src="{{ notification.from_user.profile_img.url }}" class="rounded-circle" style="width: 38px; height: 38px; object-fit: cover" alt=""></a>
+                                    </div>
+                                     {% if notification.type == 'follow' %}
+                                         <a href="{% url 'profile' notification.from_user.username %}" class="text-decoration-none">
+                                            <div class="d-flex w-100 mx-1 my-auto">
+                                                <p class="text-dark">{{ notification.from_user.username }}</p>
+                                                <p class="text-muted mx-1">started following you</p>
+                                            </div>
+                                         </a>
+                                     {% elif notification.type == 'post' %}
+                                         <a href="{% url 'post_view' notification.post.id %}" class="text-decoration-none">
+                                            <div class="d-flex w-100 mx-1 my-auto">
+                                                <p class="text-dark">{{ notification.from_user.username }}</p>
+                                                <p class="text-muted mx-1">added a new post</p>
+                                            </div>
+                                         </a>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
+
 
             <div class="col d-flex align-items-center justify-content-end">
                 <!-- Avatar -->

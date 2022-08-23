@@ -95,3 +95,11 @@ class FollowRelation(models.Model):
 
     def __str__(self):
         return 'follower ' + self.follower.username + ' followed ' + str(self.followed_user.username)
+
+
+class Notification(models.Model):
+    from_user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='from_user')
+    to_user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='to_user')
+    type = models.CharField(max_length=30, default='')
+    active = models.BooleanField(default=True)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, blank=True, null=True)

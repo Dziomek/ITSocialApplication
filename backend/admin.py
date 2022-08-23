@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import CustomUser, Profile, Post, Comment, Like, Dislike, FollowRelation
+from .models import CustomUser, Profile, Post, Comment, Like, Dislike, FollowRelation, Notification
 from django.contrib.auth.admin import UserAdmin
 
 
@@ -18,3 +18,4 @@ admin.site.register(Comment)
 admin.site.register(Like)
 admin.site.register(Dislike)
 admin.site.register(FollowRelation)
+admin.site.register(Notification)
