@@ -54,7 +54,11 @@
                     <div id="notificationButton" type="button" class="mx-4 nav__btn" data-bs-toggle="dropdown" aria-expanded="false">
                         <button type="button" class="btn px-4 border-0">
                             <i class="fa-solid fa-bell fs-4 text-secondary" style="pointer-events: none">
+                                {% if notifications_number > 0 %}
                                 <span class="badge bg-info">{{ notifications_number }}</span>
+                                {% else %}
+                                <span class="badge bg-secondary">{{ notifications_number }}</span>
+                                {% endif %}
                             </i>
                         </button>
                     </div>

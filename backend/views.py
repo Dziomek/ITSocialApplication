@@ -98,6 +98,7 @@ def profile(request, username):
     users = CustomUser.objects.all()
     follows = FollowRelation.objects.all()
     notifications = Notification.objects.all()
+    notifications_number = Notification.objects.filter(to_user=current_user).count()
 
     return render(request, 'pages/profile_page.html', {'current_user': current_user,
                                                        'user_profile': user_profile,
@@ -106,7 +107,8 @@ def profile(request, username):
                                                        'posts': posts,
                                                        'users': users,
                                                        'follows': follows,
-                                                       'notifications': notifications})
+                                                       'notifications': notifications,
+                                                       'notifications_number': notifications_number})
 
 
 @login_required(login_url='login')
