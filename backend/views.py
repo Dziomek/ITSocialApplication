@@ -67,9 +67,9 @@ def register(request):
         if first_name and last_name and username and email and password and confirm_password and gender and birthday:
             if password == confirm_password:
                 if CustomUser.objects.filter(email=email).exists():
-                    messages.info(request, "User with this email already exists")
+                    messages.info(request, "User with this email already exists!")
                 elif CustomUser.objects.filter(username=username).exists():
-                    messages.info(request, "User with this name already exists")
+                    messages.info(request, "User with this name already exists!")
                 else:
                     user = CustomUser.objects.create_user(email=email, username=username, firstname=first_name,
                                                           lastname=last_name, birthday=birthday, gender=gender,
@@ -77,11 +77,12 @@ def register(request):
                     profile = Profile(user=user, day=day, month=month, year=year)
                     profile.save()
 
-                    messages.info(request, "User created successfully")
+                    messages.info(request, "User created successfully! Please confirm your account. An activational link"
+                                           " has been sent to your email.")
             else:
-                messages.info(request, "Passwords don't match. Please try again")
+                messages.info(request, "Passwords don't match. Please try again!")
         else:
-            messages.info(request, "Missing data. Please try again")
+            messages.info(request, "Missing data. Please try again!")
     return redirect('login')
 
 
@@ -316,6 +317,7 @@ def edit_profile(request):
         update_profile_parameters(user_profile, bio, location, day, month, year)
 
     return redirect('profile', username=current_user.username)
+
 
 
 
