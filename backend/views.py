@@ -3,6 +3,8 @@ import threading
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib.auth.models import auth, User
+
+from .forms import UserLoginForm
 from .models import CustomUser, Profile, Post, Comment, Like, Dislike, FollowRelation, Notification
 from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
@@ -16,7 +18,7 @@ from django.utils.encoding import force_bytes, force_str, DjangoUnicodeDecodeErr
 from .utils import generate_token
 from django.core.mail import EmailMessage
 from social_app.settings import EMAIL_HOST_USER
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, authenticate
 import threading
 from django.views.generic import ListView
 import json
@@ -69,21 +71,23 @@ def home(request):
 
 def login(request):
     if request.method == 'POST':
-        email = request.POST['email']
-        password = request.POST['password']
+        form = UserLoginForm(request=request, data=request.POST)
+        if form.is_valid():
+            user = authenticate(
+                username=form.cleaned_data["username"],
+                password=form.cleaned_data['password']
+            )
 
-        user = auth.authenticate(email=email, password=password)
+            if not user.is_active:
+                messages.add_message(request, messages.ERROR, "Email is not verified. please check your email inbox")
+                return redirect('login')
 
-        if not user.is_active:
-            messages.add_message(request, messages.ERROR, "Email is not verified. please check your email inbox")
-            return redirect('login')
-
-        if user:
-            auth.login(request, user)
-            return redirect('home')
-        else:
-            messages.info(request, "Credentials invalid. Please try again")
-            return redirect('login')
+            if user is not None:
+                auth.login(request, user)
+                return redirect('home')
+            else:
+                messages.info(request, "Credentials invalid. Please try again")
+                return redirect('login')
 
     else:
         return render(request, 'registration/login.html')
@@ -367,17 +371,13 @@ def activate_user(request, uidb64, token):
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
-
     except:
         user = None
-
     if user is not None and generate_token.check_token(user, token):
         user.is_active = True
         user.save()
-
         messages.add_message(request, messages.SUCCESS, 'Email verified, you can login now')
         return redirect(reverse('login'))
-
     else:
         return render(request, 'registration/activation_failed.html', {
         'user': user

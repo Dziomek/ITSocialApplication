@@ -36,7 +36,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'backend'
+    'backend',
+    'captcha'
 ]
 
 MIDDLEWARE = [
@@ -136,3 +137,9 @@ EMAIL_HOST_PASSWORD = 'cgpevopbdurbahhg'
 
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
+
+
+#rechapta
+RECAPTCHA_PUBLIC_KEY = '6LdxuMohAAAAAFrH8_U5Fu1wC41eDgC2XDow-i9U'
+RECAPTCHA_PRIVATE_KEY = '6LdxuMohAAAAALdfjSNLfRmV4qRTQ2vKuylX12u5'
+SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
