@@ -47,7 +47,7 @@ def login(request):
             return redirect('login')
 
     else:
-        return render(request, 'pages/start_page.html')
+        return render(request, 'registration/loginlogin.html')
 
 
 def register(request):
