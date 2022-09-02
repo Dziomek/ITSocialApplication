@@ -1,20 +1,54 @@
+import threading
+
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from django.contrib.auth.models import auth
+from django.contrib.auth.models import auth, User
 from .models import CustomUser, Profile, Post, Comment, Like, Dislike, FollowRelation, Notification
 from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .functions import make_birthday_date, get_number_of_comments, update_profile_parameters, update_user_parameters
 from annoying.functions import get_object_or_None
+from django.contrib.sites.shortcuts import get_current_site
+from django.template.loader import render_to_string
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_str, DjangoUnicodeDecodeError
+from .utils import generate_token
+from django.core.mail import EmailMessage
+from social_app.settings import EMAIL_HOST_USER
+from django.contrib.auth import get_user_model
+import threading
 from django.views.generic import ListView
 import json
+
+
 # Create your views here.
 
 
 def start_route(request):
     return redirect('home')
 
+
+class EmailThread(threading.Thread):
+    def __init__(self, email):
+        self.email = email
+        threading.Thread.__init__(self)
+
+    def run(self):
+        self.email.send(fail_silently=False)
+
+
+def send_activation_email(user, request):
+    current_site = get_current_site(request)
+    email_subject = '[ITSocialApp] Activate your account'
+    email_body = render_to_string('registration/activation.html', {
+        'user': user,
+        'domain': current_site,
+        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+        'token': generate_token.make_token(user)
+    })
+    email = EmailMessage(subject=email_subject, body=email_body, from_email=EMAIL_HOST_USER, to=[user.email])
+    EmailThread(email).start()
 
 @login_required(login_url='login')
 def home(request):
@@ -39,6 +73,11 @@ def login(request):
         password = request.POST['password']
 
         user = auth.authenticate(email=email, password=password)
+
+        if not user.is_active:
+            messages.add_message(request, messages.ERROR, "Email is not verified. please check your email inbox")
+            return redirect('login')
+
         if user:
             auth.login(request, user)
             return redirect('home')
@@ -47,7 +86,7 @@ def login(request):
             return redirect('login')
 
     else:
-        return render(request, 'registration/loginlogin.html')
+        return render(request, 'registration/login.html')
 
 
 def register(request):
@@ -75,10 +114,13 @@ def register(request):
                                                           lastname=last_name, birthday=birthday, gender=gender,
                                                           password=password)
                     profile = Profile(user=user, day=day, month=month, year=year)
-                    profile.save()
 
-                    messages.info(request, "User created successfully! Please confirm your account. An activational link"
-                                           " has been sent to your email.")
+                    profile.save()
+                    send_activation_email(user, request)
+
+                    messages.info(request,
+                                  "User created successfully! Please confirm your account. An activational link"
+                                  " has been sent to your email.")
             else:
                 messages.info(request, "Passwords don't match. Please try again!")
         else:
@@ -102,7 +144,6 @@ def profile(request, username):
     follows = FollowRelation.objects.all()
     notifications = Notification.objects.all()
     notifications_number = Notification.objects.filter(to_user=current_user).count()
-
 
     return render(request, 'pages/profile_page.html', {'current_user': current_user,
                                                        'user_profile': user_profile,
@@ -129,7 +170,6 @@ def forum(request):
     follows = FollowRelation.objects.all()
     get_number_of_comments()
 
-
     return render(request, 'pages/forum_page.html', {'current_user': current_user,
                                                      'user_profile': user_profile,
                                                      'posts': posts,
@@ -141,6 +181,7 @@ def forum(request):
                                                      'notifications_number': notifications_number,
                                                      'follows': follows
                                                      })
+
 
 @login_required(login_url='login')
 def add_post(request):
@@ -173,7 +214,6 @@ def post_view(request, post_id):
     notifications = Notification.objects.all()
     notifications_number = Notification.objects.filter(to_user=current_user).count()
 
-
     return render(request, 'pages/post_page.html', {'post': post,
                                                     'current_user': current_user,
                                                     'comments': comments,
@@ -182,6 +222,7 @@ def post_view(request, post_id):
                                                     'notifications': notifications,
                                                     'notifications_number': notifications_number
                                                     })
+
 
 @login_required(login_url='login')
 def delete_post(request, post_id):
@@ -195,7 +236,6 @@ def delete_post(request, post_id):
 
 @login_required(login_url='login')
 def create_comment(request, post_id):
-
     if request.method == 'POST':
         current_user = request.user
         post = Post.objects.get(id=post_id)
@@ -245,6 +285,7 @@ def like_post(request, post_id):
 
     return redirect('post_view', post_id=post_id)
 
+
 @login_required(login_url='login')
 def dislike_post(request, post_id):
     current_user = request.user
@@ -268,6 +309,7 @@ def dislike_post(request, post_id):
         dislike.delete()
 
     return redirect('post_view', post_id=post_id)
+
 
 @login_required(login_url='login')
 def follow_or_unfollow(request, username):
@@ -294,6 +336,7 @@ def follow_or_unfollow(request, username):
 
     return redirect('profile', username=user.username)
 
+
 @login_required(login_url='login')
 def edit_profile(request):
     current_user = request.user
@@ -319,5 +362,23 @@ def edit_profile(request):
     return redirect('profile', username=current_user.username)
 
 
+def activate_user(request, uidb64, token):
+    User = get_user_model()
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
 
+    except:
+        user = None
 
+    if user is not None and generate_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+
+        messages.add_message(request, messages.SUCCESS, 'Email verified, you can login now')
+        return redirect(reverse('login'))
+
+    else:
+        return render(request, 'registration/activation_failed.html', {
+        'user': user
+    })
