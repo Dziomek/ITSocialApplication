@@ -2,23 +2,24 @@ import threading
 
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from django.contrib.auth.models import auth, User
 
-from .forms import UserLoginForm
+from django.contrib.auth.models import auth, User
+from django.views import View
+
 from .models import CustomUser, Profile, Post, Comment, Like, Dislike, FollowRelation, Notification
 from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .functions import make_birthday_date, get_number_of_comments, update_profile_parameters, update_user_parameters
-from annoying.functions import get_object_or_None
+
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.utils.encoding import force_bytes, force_str, DjangoUnicodeDecodeError
+from django.utils.encoding import force_bytes, force_str, DjangoUnicodeDecodeError, force_text
 from .utils import generate_token
 from django.core.mail import EmailMessage
 from social_app.settings import EMAIL_HOST_USER
-from django.contrib.auth import get_user_model, authenticate
+from django.contrib.auth import get_user_model
 import threading
 from django.views.generic import ListView
 import json
@@ -45,12 +46,14 @@ def send_activation_email(user, request):
     email_subject = '[ITSocialApp] Activate your account'
     email_body = render_to_string('registration/activation.html', {
         'user': user,
-        'domain': current_site,
+        'domain': current_site.domain,
         'uid': urlsafe_base64_encode(force_bytes(user.pk)),
         'token': generate_token.make_token(user)
     })
     email = EmailMessage(subject=email_subject, body=email_body, from_email=EMAIL_HOST_USER, to=[user.email])
+    email.content_subtype = "html"
     EmailThread(email).start()
+
 
 @login_required(login_url='login')
 def home(request):
@@ -71,24 +74,21 @@ def home(request):
 
 def login(request):
     if request.method == 'POST':
-        form = UserLoginForm(request=request, data=request.POST)
-        if form.is_valid():
-            user = authenticate(
-                username=form.cleaned_data["username"],
-                password=form.cleaned_data['password']
-            )
+        email = request.POST['email']
+        password = request.POST['password']
 
-            if not user.is_active:
-                messages.add_message(request, messages.ERROR, "Email is not verified. please check your email inbox")
-                return redirect('login')
+        user = auth.authenticate(email=email, password=password)
 
-            if user is not None:
-                auth.login(request, user)
-                return redirect('home')
-            else:
-                messages.info(request, "Credentials invalid. Please try again")
-                return redirect('login')
+        if not user.is_active:
+            messages.info(request, "Email is not verified. please check your email inbox")
+            return redirect('login')
 
+        if user:
+            auth.login(request, user)
+            return redirect('home')
+        else:
+            messages.info(request, "Credentials invalid. Please try again")
+            return redirect('login')
     else:
         return render(request, 'registration/login.html')
 
@@ -367,18 +367,19 @@ def edit_profile(request):
 
 
 def activate_user(request, uidb64, token):
-    User = get_user_model()
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
-        user = User.objects.get(pk=uid)
-    except:
+        user = CustomUser.objects.get(pk=uid)
+    except Exception as e:
         user = None
+
     if user is not None and generate_token.check_token(user, token):
         user.is_active = True
         user.save()
-        messages.add_message(request, messages.SUCCESS, 'Email verified, you can login now')
+        messages.info(request, 'Email verified, you can login now')
         return redirect(reverse('login'))
     else:
+        user.is_active = True
         return render(request, 'registration/activation_failed.html', {
-        'user': user
-    })
+            'user': user
+        })

@@ -73,10 +73,11 @@ WSGI_APPLICATION = 'social_app.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': str(BASE_DIR / 'db.sqlite3'),
     }
 }
 
@@ -124,6 +125,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = '/_media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, '_media')
 
+
 AUTH_USER_MODEL = 'backend.CustomUser'
 
 
@@ -143,3 +145,4 @@ LOGOUT_URL = 'logout'
 RECAPTCHA_PUBLIC_KEY = '6LdxuMohAAAAAFrH8_U5Fu1wC41eDgC2XDow-i9U'
 RECAPTCHA_PRIVATE_KEY = '6LdxuMohAAAAALdfjSNLfRmV4qRTQ2vKuylX12u5'
 SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
+

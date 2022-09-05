@@ -8,8 +8,8 @@ from .views import login, home, register, start_route, logout, profile, \
 urlpatterns = [
     path('', start_route),
     path('login', login, name='login'),
-    path('register', register, name='register'),
     path('home', home, name='home'),
+    path('register', register, name='register'),
     path('logout', logout, name='logout'),
     path('profile/<str:username>', profile, name='profile'),
     path('forum', forum, name='forum'),
@@ -39,6 +39,8 @@ urlpatterns = [
         template_name="register/password_reset_complete.html"), name='password_reset_complete'),
 
     #activation user
-    path('activate_user/<uidb64>/<token>/', activate_user, name='activate')
+    path('activate/<uidb64>/<token>/', activate_user, name='activate')
+
+
 
 ]
