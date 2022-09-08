@@ -1,3 +1,5 @@
+{% autoescape off %}
+
 <!doctype html>
 <html lang="en-US">
 
@@ -46,7 +48,7 @@
                                         <p style="color:#455056; font-size:15px;line-height:24px; margin:0;">
                                            Please use link below to verify your account.
                                             <br>
-                                            http://{{domain}}{% url 'activate' uidb64=uid token=token %}
+                                           http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
 
                                         </p>
 
@@ -81,3 +83,4 @@
 </body>
 
 </html>
+{% endautoescape %}
