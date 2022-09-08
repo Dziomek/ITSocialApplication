@@ -1,0 +1,45 @@
+{% extends 'pages/start_base.html' %}
+
+{% block login %}
+    <form action="" method="POST">
+        {% csrf_token %}
+        <div style="max-width: 28rem; width: 100%;">
+            <div class="bg-white shadow rounded p-3 input-group-lg">
+                <div class="container d-flex justify-content-evenly mt-1" style="height: 75px">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-secondary alert-dismissible fade show w-100">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="fw-normal text-center text-muted mb-4">
+                    Do not have an account? <a href="" class="text-primary fw-bold text-decoration-none" data-bs-toggle="modal" data-bs-target="#exampleModal">Create an account</a>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="email" name="email" class="form-control" id="floatingInput" placeholder="Email">
+                    <label for="floatingInput">Email address</label>
+                </div>
+                <div class="form-floating">
+                    <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password">
+                    <label for="floatingPassword">Password</label>
+                </div>
+                <div class="mt-2 text-end">
+                    <a href="{% url 'password_reset' %}" class="text-primary fw-bold text-decoration-none">Forgot your password?</a>
+                </div>
+                <button type="submit" class="btn btn-secondary submit_btn w-100 my-4">Log in</button>
+                <div class="text-center text-muted text-uppercase mb-3">or</div>
+                <div class="text-center mb-3 mt-3">
+                    <button type="button" class="btn btn-outline-secondary w-75">
+                        <img id="githubImg" src="/_static/images/github.png" class="img-fluid me-3" alt="">
+                            Continue with GitHub
+                        </button>
+                </div>
+                <!-- Button trigger modal -->
+                <div class="container d-flex justify-content-evenly mt-1" style="height: 50px"></div>
+            </div>
+        </div>
+    </form>
+{% endblock %}
