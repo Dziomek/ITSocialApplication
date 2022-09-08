@@ -1,0 +1,21 @@
+{% extends 'reset_and_activate/password_reset/../reset_activate_base.html' %}
+
+{% block activate_content %}
+    <div class="container d-flex mt-5 justify-content-center">
+        <h2 class="text-secondary">
+            Please click the activation link we sent to <strong>{{ current_user.email }}</strong>
+        </h2>
+    </div>
+    <div class="container d-flex text-center justify-content-center mt-3">
+       <h5>
+            If you don't receive an email, <a href="">send it again</a>
+       </h5>
+    </div>
+    <div class="container d-flex justify-content-center mt-3">
+        <a href="{% url 'login' %}" class="text-light text-decoration-none">
+            <button type="button" class="btn btn-outline-secondary w-100">
+                   Go back to login
+            </button>
+        </a>
+    </div>
+{% endblock %}

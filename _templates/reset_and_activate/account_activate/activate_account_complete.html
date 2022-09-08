@@ -1,0 +1,16 @@
+{% extends 'reset_and_activate/reset_activate_base.html' %}
+
+{% block activate_content %}
+    <div class="container d-flex mt-5 justify-content-center">
+        <h2 class="text-secondary">
+            Your password has been confirmed successfully. You can go back to login page now.
+        </h2>
+    </div>
+    <div class="container d-flex justify-content-center mt-3">
+        <a href="{% url 'login' %}" class="text-light text-decoration-none">
+            <button type="button" class="btn btn-outline-secondary w-100">
+                   Go back to login
+            </button>
+        </a>
+    </div>
+{% endblock %}

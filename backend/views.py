@@ -1,6 +1,14 @@
+from django.contrib.auth import get_user_model
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import EmailMessage
 from django.shortcuts import render, redirect
+from django.template.loader import render_to_string
 from django.urls import reverse
 from django.contrib.auth.models import auth
+from django.utils.encoding import force_bytes, force_str
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+
+from social_app.settings import EMAIL_HOST_USER
 from .models import CustomUser, Profile, Post, Comment, Like, Dislike, FollowRelation, Notification
 from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
@@ -10,6 +18,7 @@ from annoying.functions import get_object_or_None
 from django.views.generic import ListView
 import json
 # Create your views here.
+from .utils import generate_token
 
 
 def start_route(request):
@@ -42,6 +51,12 @@ def login(request):
             auth.login(request, user)
             return redirect('home')
         else:
+            user_exists = get_object_or_None(CustomUser, email=email)
+            if user_exists:
+                if user_exists.check_password(password):
+                    return render(request, 'reset_and_activate/account_activate/activate_account.html',
+                                  {'current_user': user_exists})
+
             messages.info(request, "Credentials invalid. Please try again")
             return redirect('login')
 
@@ -76,7 +91,10 @@ def register(request):
                     profile = Profile(user=user, day=day, month=month, year=year)
                     profile.save()
 
-                    messages.info(request, "User created successfully")
+                    send_activation_email(user, request)
+                    return render(request, 'reset_and_activate/account_activate/activate_account.html',
+                                  {'current_user': user
+                    })
             else:
                 messages.info(request, "Passwords don't match. Please try again")
         else:
@@ -317,6 +335,36 @@ def edit_profile(request):
 
     return redirect('profile', username=current_user.username)
 
-def reset_password(request):
-    pass
+def activate_account_complete(request):
+    return render(request, 'reset_and_activate/account_activate/activate_account_complete.html')
+
+
+def send_activation_email(user, request):
+    current_site = get_current_site(request)
+    email_subject = '[ITSocialApp] Activate your account'
+    email_body = render_to_string('reset_and_activate/account_activate/activate_account_email.html', {
+        'user': user,
+        'domain': current_site,
+        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+        'token': generate_token.make_token(user)
+    })
+    email = EmailMessage(subject=email_subject, body=email_body, from_email=EMAIL_HOST_USER, to=[user.email])
+    email.send()
+
+
+def activate_user(request, uidb64, token):
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = CustomUser.objects.get(pk=uid)
+    except:
+        user = None
+
+    if user and generate_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+
+        return redirect('activate_account_complete')
+
+    else:
+        return render(request, 'reset_and_activate/account_activate/activate_account_failed.html')
 
