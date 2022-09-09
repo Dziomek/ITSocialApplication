@@ -9,7 +9,7 @@ from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 
 from social_app.settings import EMAIL_HOST_USER
-from .models import CustomUser, Profile, Post, Comment, Like, Dislike, FollowRelation, Notification
+from .models import CustomUser, Profile, Post, Comment, Like, Dislike, FollowRelation, Notification, Message
 from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -345,7 +345,27 @@ def messages_page(request):
     return render(request, 'pages/messages_page.html', {'current_user': current_user,
                                                         'notifications': notifications,
                                                         'notifications_number': notifications_number,
-                                                        'users': users})
+                                                        'users': users,
+                                                        })
+
+@login_required(login_url='login')
+def create_message(request):
+    if request.method == 'POST':
+        content = request.POST['content']
+        username = request.POST['username']
+        topic = request.POST['topic']
+
+        sender = request.user
+        recipient = get_object_or_None(CustomUser, username=username)
+        if recipient:
+            message = Message(sender=sender, recipient=recipient, topic=topic, content=content)
+            message.save()
+            print('stworzone')
+
+    return redirect('forum')
+
+
+
 
 def activate_account_complete(request):
     return render(request, 'reset_and_activate/account_activate/activate_account_complete.html')

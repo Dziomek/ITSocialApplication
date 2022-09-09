@@ -5,9 +5,10 @@
     {% include 'modals/followers_modal.html' %}
     {% include 'modals/following_modal.html' %}
     {% include 'modals/edit_profile.html' %}
+    {% include 'modals/create_message_modal.html' %}
     <link rel="stylesheet" href="/_static/css/profile_page_style.css">
     <div class="container-fluid d-flex flex-row justify-content-center" style="margin-top:150px">
-        <div class="shadow rounded">
+        <div class="shadow rounded" style="min-width: 500px">
             <a href="" data-bs-toggle="modal" data-bs-target="#editProfileModal">
                 <img id="profilePicture" src="{{ searched_user.profile_img.url }}" class="rounded-circle m-5" alt="avatar">
             </a>
@@ -23,6 +24,13 @@
                 <div id ="followDiv" class="d-flex mx-3 justify-content-between align-items-center">
                     <h5 class="text-secondary fs-0 fw-bold mt-3">{{ searched_user.username }}</h5>
                 </div>
+                {% if current_user.username != searched_user.username %}
+                    <div class="d-flex justify-content-end mx-3 mt-1">
+                        <button onclick="setUsernameValue()" type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#messageModal">
+                            <i class="fa-solid fa-envelope fs-4" style="pointer-events: none"></i>
+                        </button>
+                    </div>
+                {% endif %}
                 <hr>
                 <div class="d-flex justify-content-between">
                     <div class="d-flex justify-content-evenly align-items-center w-100">
@@ -96,6 +104,11 @@
             classColor = 'btn-outline-primary'
             buttonText = 'Follow'
         {% endif %}
+
+        function setUsernameValue() {
+            const area = document.getElementById("usernameArea")
+            area.innerHTML = '{{ searched_user.username }}'
+        }
 
         function addYears() {
             const yearSelect = document.getElementsByName("Year")[0]

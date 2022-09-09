@@ -2,7 +2,7 @@ from django.urls import path
 from django.contrib.auth import views as auth_views
 from .views import login, home, register, start_route, logout, profile, \
     forum, add_post, post_view, delete_post, create_comment, delete_comment, like_post, dislike_post, \
-    follow_or_unfollow, edit_profile, activate_user, activate_account_complete, messages_page
+    follow_or_unfollow, edit_profile, activate_user, activate_account_complete, messages_page, create_message
 
 urlpatterns = [
     path('', start_route),
@@ -22,6 +22,7 @@ urlpatterns = [
     path('follow/<str:username>', follow_or_unfollow, name='follow_or_unfollow'),
     path('edit_profile', edit_profile, name='edit_profile'),
     path('messages', messages_page, name='messages'),
+    path('create_message', create_message, name='create_message'),
 
     path('activate_user/<uidb64>/<token>/', activate_user, name='activate'),
     path('activate_account_complete', activate_account_complete, name='activate_account_complete'),

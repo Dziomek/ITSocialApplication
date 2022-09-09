@@ -1,12 +1,13 @@
 {% extends 'pages/home_base.html' %}
 
 {% block messages %}
+    {% include 'modals/create_message_modal.html' %}
     <script src="/_static/js/messages_page_script.js"></script>
     <div class="container-fluid d-flex flex-row justify-content-center" style="margin-top:150px">
         <div class="d-flex shadow rounded w-75" style="height: 80vh">
             <div class="w-25 overflow-auto">
                 {% for user in users %}
-                <div class="d-flex shadow rounded align-items-center p-3 overflow-auto">
+                    <div type="button" onclick="messageClick('{{ user.username }}')" class="d-flex shadow rounded align-items-center p-3 overflow-auto">
                     <a href="{% url 'profile' user.username %}">
                         <img src="{{ user.profile_img.url }}" alt="avatar"
                              class="rounded-circle me-2" style="width: 38px; height: 38px; object-fit: cover;">
@@ -16,9 +17,20 @@
                 </div>
                 {% endfor %}
             </div>
-            <div class="shadow rounded w-100">
-                HEJ
+            <div id="messagesDiv" class="shadow rounded w-100">
+                <button type="button" data-bs-toggle="modal" data-bs-target="#messageModal">
+                    Create new message
+                </button>
             </div>
         </div>
     </div>
+    <script>
+        function messageClick(username) {
+            div = document.getElementById("messagesDiv")
+            div.innerHTML = ''
+            p = document.createElement("p")
+            p.innerText = username
+            div.appendChild(p)
+        }
+    </script>
 {% endblock %}

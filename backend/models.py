@@ -103,3 +103,11 @@ class Notification(models.Model):
     type = models.CharField(max_length=30, default='')
     active = models.BooleanField(default=True)
     post = models.ForeignKey(Post, on_delete=models.CASCADE, blank=True, null=True)
+
+
+class Message(models.Model):
+    sender = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='sender')
+    recipient = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='recipient')
+    topic = models.CharField(max_length=30, default='')
+    content = models.CharField(max_length=1200, default='')
+    date = models.DateField(auto_now_add=True)

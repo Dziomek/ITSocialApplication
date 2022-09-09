@@ -1,0 +1,28 @@
+<form action="{% url 'create_message' %}" method="POST">
+    {% csrf_token %}
+    <div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="">
+                        <h2 class="modal-title" id="exampleModalLabel">Send a message</h2>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-1">
+                        <textarea id="usernameArea" name="username" class="form-control rounded bg-gray h-100" style="padding-top: 0.4rem" placeholder="Username"></textarea>
+                    </div>
+                    <div class="mb-1">
+                        <textarea name="topic" class="form-control rounded bg-gray h-100" style="padding-top: 0.4rem" placeholder="Topic"></textarea>
+                    </div>
+                    <div style="height: 300px">
+                        <textarea name="content" class="form-control rounded bg-gray h-100" style="padding-top: 0.4rem" placeholder="Content"></textarea>
+                    </div>
+                    <hr>
+                    <a href=""><button type="submit" class="btn btn-secondary submit_btn w-100 my-4">Send</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
