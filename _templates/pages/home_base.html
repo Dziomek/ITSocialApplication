@@ -117,9 +117,23 @@
                     <p class="mx-1 my-auto">{{ current_user.username }} </p>
                 </div>
                 <!--Settings -->
-                <button class="btn border-0">
-                    <i class="fa-solid fa-gear mx-5 fs-3"></i>
-                </button>
+                <div class="dropdown">
+                    <button class="btn border-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa-solid fa-gear mx-5 fs-3"></i>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="" href="#">
+                            <button class="btn btn-light w-100">
+                                Change password
+                            </button>
+                        </a>
+                        <a class="" href="{% url 'profile' current_user.username %}">
+                            <button class="btn btn-light w-100">
+                                View profile
+                            </button>
+                        </a>
+                    </div>
+                </div>
                 <!-- Logout -->
                 <a href="{% url 'logout' %}">
                     <button class="btn border-0">
