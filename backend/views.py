@@ -33,13 +33,15 @@ def home(request):
     notifications = Notification.objects.all().order_by('-id')
     notifications_number = Notification.objects.filter(to_user=current_user).count()
     follows = FollowRelation.objects.all()
+    messages_received_number = Message.objects.filter(recipient=current_user).count()
 
     return render(request, 'pages/home_page.html', {'current_user': current_user,
                                                     'user_profile': user_profile,
                                                     'users': users,
                                                     'notifications': notifications,
                                                     'notifications_number': notifications_number,
-                                                    'follows': follows})
+                                                    'follows': follows,
+                                                    'messages_received_number': messages_received_number})
 
 
 def login(request):
@@ -119,6 +121,7 @@ def profile(request, username):
     follows = FollowRelation.objects.all()
     notifications = Notification.objects.all()
     notifications_number = Notification.objects.filter(to_user=current_user).count()
+    messages_received_number = Message.objects.filter(recipient=current_user).count()
 
 
     return render(request, 'pages/profile_page.html', {'current_user': current_user,
@@ -129,7 +132,8 @@ def profile(request, username):
                                                        'users': users,
                                                        'follows': follows,
                                                        'notifications': notifications,
-                                                       'notifications_number': notifications_number})
+                                                       'notifications_number': notifications_number,
+                                                       'messages_received_number': messages_received_number})
 
 
 @login_required(login_url='login')
@@ -144,6 +148,7 @@ def forum(request):
     notifications = Notification.objects.all()
     notifications_number = Notification.objects.filter(to_user=current_user).count()
     follows = FollowRelation.objects.all()
+    messages_received_number = Message.objects.filter(recipient=current_user).count()
     get_number_of_comments()
 
 
@@ -156,7 +161,8 @@ def forum(request):
                                                      'dislikes': dislikes,
                                                      'notifications': notifications,
                                                      'notifications_number': notifications_number,
-                                                     'follows': follows
+                                                     'follows': follows,
+                                                     'messages_received_number': messages_received_number
                                                      })
 
 @login_required(login_url='login')
@@ -189,6 +195,7 @@ def post_view(request, post_id):
     dislikes = Dislike.objects.all()
     notifications = Notification.objects.all()
     notifications_number = Notification.objects.filter(to_user=current_user).count()
+    messages_received_number = Message.objects.filter(recipient=current_user).count()
 
 
     return render(request, 'pages/post_page.html', {'post': post,
@@ -197,7 +204,8 @@ def post_view(request, post_id):
                                                     'likes': likes,
                                                     'dislikes': dislikes,
                                                     'notifications': notifications,
-                                                    'notifications_number': notifications_number
+                                                    'notifications_number': notifications_number,
+                                                    'messages_received_number': messages_received_number
                                                     })
 
 @login_required(login_url='login')
@@ -342,12 +350,14 @@ def messages_page(request):
     notifications_number = Notification.objects.filter(to_user=current_user).count()
     users = CustomUser.objects.all()
     messages_received = Message.objects.filter(recipient=current_user)
+    messages_received_number = Message.objects.filter(recipient=current_user).count()
 
     return render(request, 'pages/messages_page.html', {'current_user': current_user,
                                                         'notifications': notifications,
                                                         'notifications_number': notifications_number,
                                                         'users': users,
-                                                        'messages_received': messages_received
+                                                        'messages_received': messages_received,
+                                                        'messages_received_number': messages_received_number
                                                         })
 
 @login_required(login_url='login')
@@ -365,6 +375,13 @@ def create_message(request):
 
     return redirect('messages')
 
+@login_required(login_url='login')
+def delete_message(request, message_id):
+    message_to_delete = Message.objects.get(id=message_id)
+    if message_to_delete:
+        message_to_delete.delete()
+
+    return redirect('messages')
 
 
 

@@ -12,15 +12,19 @@
                 <hr>
                 {% for message in messages_received %}
                     <div type="button" onclick="messageClick('{{ message.topic }}', '{{ message.content }}',
-                            '{{ message.sender.username }}', '{{ message.sender.profile_img.url }}')" class="d-flex shadow rounded align-items-center p-3 overflow-auto">
+                            '{{ message.sender.username }}', '{{ message.sender.profile_img.url }}', '{{ message.date }}')" class="d-flex shadow rounded align-items-center p-3 overflow-auto">
                         <a href="{% url 'profile' message.sender.username %}">
                             <img src="{{ message.sender.profile_img.url }}" alt="avatar"
                                  class="rounded-circle me-2" style="width: 38px; height: 38px; object-fit: cover;">
                         </a>
-                        <p class="text-secondary m-0">{{ message.sender.username }}</p>
-                        <p class="text-dark m-0 mx-3">{{ message.topic }} </p>
+                        <div class="d-flex overflow-hidden w-75">
+                           <p class="text-secondary m-0">{{ message.sender.username }}</p>
+                            <p class="text-dark m-0 mx-3">{{ message.topic }} </p>
+                        </div>
                         <div class="d-flex justify-content-end">
-                            <button type="button" class="btn btn-light"><i class="fa-sharp fa-solid fa-xmark"></i></button>
+                            <a href="{% url 'delete_message' message.id %}">
+                                <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#deleteMessageModal"><i class="fa-sharp fa-solid fa-xmark"></i></button>
+                            </a>
                         </div>
                     </div>
                 {% endfor %}
@@ -43,7 +47,7 @@
         </div>
     </div>
     <script>
-        function messageClick(topic, content, username, url) {
+        function messageClick(topic, content, username, url, date) {
             const div = document.getElementById("messagesData")
             div.innerHTML = ''
             const div1 = document.createElement('div')

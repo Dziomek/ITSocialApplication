@@ -53,7 +53,13 @@
                 <div class="mx-4 nav__btn">
                     <a href="{% url 'messages' %}">
                         <button id="messagesButton" class="btn px-4 border-0">
-                            <i class="fa-solid fa-envelope fs-4 text-secondary" style="pointer-events: none"></i>
+                            <i class="fa-solid fa-envelope fs-4 text-secondary" style="pointer-events: none">
+                                {% if messages_received_number > 0 %}
+                                <span class="badge bg-info">{{ messages_received_number }}</span>
+                                {% else %}
+                                <span class="badge bg-secondary">{{ messages_received_number }}</span>
+                                {% endif %}
+                            </i>
                         </button>
                     </a>
                 </div>
@@ -69,7 +75,7 @@
                             </i>
                         </button>
                     </div>
-                    <div class="dropdown-menu overflow-auto" aria-labelledby="notificationButton" style="max-height: 300px; width:300px">
+                    <div class="dropdown-menu overflow-auto" aria-labelledby="notificationButton" style="max-height: 300px; width:350px">
                         <div class="d-flex justify-content-center">
                             <p class="text-muted">Notifications</p>
                         </div>
