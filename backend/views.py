@@ -340,10 +340,12 @@ def messages_page(request):
     current_user = request.user
     notifications = Notification.objects.all()
     notifications_number = Notification.objects.filter(to_user=current_user).count()
+    users = CustomUser.objects.all()
 
     return render(request, 'pages/messages_page.html', {'current_user': current_user,
                                                         'notifications': notifications,
-                                                        'notifications_number': notifications_number})
+                                                        'notifications_number': notifications_number,
+                                                        'users': users})
 
 def activate_account_complete(request):
     return render(request, 'reset_and_activate/account_activate/activate_account_complete.html')
