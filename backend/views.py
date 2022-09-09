@@ -362,9 +362,8 @@ def create_message(request):
         if recipient:
             message = Message(sender=sender, recipient=recipient, topic=topic, content=content)
             message.save()
-            print('stworzone')
 
-    return redirect('forum')
+    return redirect('messages')
 
 
 

@@ -11,14 +11,18 @@
                 </div>
                 <hr>
                 {% for message in messages_received %}
-                    <div type="button" onclick="messageClick('{{ message.topic }}', '{{ message.content }}')" class="d-flex shadow rounded align-items-center p-3 overflow-auto">
-                    <a href="{% url 'profile' user.username %}">
-                        <img src="{{ message.sender.profile_img.url }}" alt="avatar"
-                             class="rounded-circle me-2" style="width: 38px; height: 38px; object-fit: cover;">
-                    </a>
-                    <p class="text-secondary m-0">{{ message.sender.username }}</p>
-                    <p class="text-dark m-0 mx-3">{{ message.topic }} </p>
-                </div>
+                    <div type="button" onclick="messageClick('{{ message.topic }}', '{{ message.content }}',
+                            '{{ message.sender.username }}', '{{ message.sender.profile_img.url }}')" class="d-flex shadow rounded align-items-center p-3 overflow-auto">
+                        <a href="{% url 'profile' message.sender.username %}">
+                            <img src="{{ message.sender.profile_img.url }}" alt="avatar"
+                                 class="rounded-circle me-2" style="width: 38px; height: 38px; object-fit: cover;">
+                        </a>
+                        <p class="text-secondary m-0">{{ message.sender.username }}</p>
+                        <p class="text-dark m-0 mx-3">{{ message.topic }} </p>
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn btn-light"><i class="fa-sharp fa-solid fa-xmark"></i></button>
+                        </div>
+                    </div>
                 {% endfor %}
             </div>
             <div id="messagesDiv" class="shadow rounded w-100">
@@ -27,16 +31,7 @@
                         <p class="fs-3 text-secondary">Message content</p>
                     </div>
                     <hr>
-                    <div class="d-flex p-3 w-100">
-                        <img src="{{ current_user.profile_img.url }}" alt="avatar"
-                             class="rounded-circle me-2" style="width: 100px; height: 100px; object-fit: cover;">
-                        <p class="text-dark fs-3 my-auto mx-2">Username</p>
-                    </div>
-                    <div class="p-3">
-                        <p class="fs-1 text-dark">Topic</p>
-                    </div>
-                    <div class="p-3">
-                        <p class="fs-4 text-secondary">Content</p>
+                    <div id="messagesData">
                     </div>
                 </div>
                 <div class="d-flex justify-content-end mx-3">
@@ -48,18 +43,38 @@
         </div>
     </div>
     <script>
-        function messageClick(topic, content) {
-            const div = document.getElementById("messagesDiv")
+        function messageClick(topic, content, username, url) {
+            const div = document.getElementById("messagesData")
             div.innerHTML = ''
             const div1 = document.createElement('div')
             div1.classList.add('d-flex', 'p-3', 'w-100')
             const img = document.createElement('img')
             img.classList.add('rounded-circle', 'me-2')
             img.style = "width: 100px; height: 100px; object-fit: cover;"
+            img.src = url
             const pUsername = document.createElement("p")
             pUsername.classList.add('text-dark', 'fs-3', 'my-auto', 'mx-2')
+            pUsername.innerText = username
+            div1.appendChild(img)
+            div1.appendChild(pUsername)
 
+            const div2 = document.createElement('div')
+            div2.classList.add('p-3')
+            const pTopic = document.createElement('p')
+            pTopic.classList.add('fs-1', 'text-dark')
+            pTopic.innerText = topic
+            div2.appendChild(pTopic)
 
+            const div3 = document.createElement('div')
+            div3.classList.add('p-3')
+            const pContent = document.createElement('p')
+            pContent.classList.add('text-secondary', 'fs-4')
+            pContent.innerText = content
+            div3.appendChild(pContent)
+
+            div.appendChild(div1)
+            div.appendChild(div2)
+            div.appendChild(div3)
         }
     </script>
 {% endblock %}
