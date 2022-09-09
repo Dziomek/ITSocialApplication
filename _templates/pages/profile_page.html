@@ -62,17 +62,23 @@
         <div class="mx-3 "style="max-width: 60rem; width: 100%;">
             <div class="bg-white shadow rounded p-3 input-group-lg">
                 <h1 class="text-secondary fs-0 fw-bold mt-3">Bio</h1>
-                {{ user_profile.about }}
+                <hr>
+                <p class="fs-4">{{ user_profile.about }}</p>
             </div>
             <div class="bg-white shadow rounded p-3 input-group-lg mt-4 overflow-auto" style="max-height: 600px">
                 <h1 class="text-secondary fs-0 fw-bold mt-3 mb-3">Posts</h1>
-                {% for post in posts %}
-                    <a href="{% url 'post_view' post.id %}" class="text-decoration-none">
-                        <div class="btn btn-light w-100 text-start">
-                            <h3>{{ post.topic }}</h3><p>{{ post.date }}</p>
-                        </div>
-                    </a>
-                {% endfor%}
+                <hr>
+                {% if posts %}
+                    {% for post in posts %}
+                        <a href="{% url 'post_view' post.id %}" class="text-decoration-none">
+                            <div class="btn btn-light w-100 text-start">
+                                <h3>{{ post.topic }}</h3><p>{{ post.date }}</p>
+                            </div>
+                        </a>
+                    {% endfor%}
+                {% else %}
+                    <p class="fs-4">This user has not posted any post yet</p>
+                {% endif %}
             </div>
         </div>
     </div>

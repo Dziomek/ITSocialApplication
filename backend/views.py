@@ -341,11 +341,13 @@ def messages_page(request):
     notifications = Notification.objects.all()
     notifications_number = Notification.objects.filter(to_user=current_user).count()
     users = CustomUser.objects.all()
+    messages_received = Message.objects.filter(recipient=current_user)
 
     return render(request, 'pages/messages_page.html', {'current_user': current_user,
                                                         'notifications': notifications,
                                                         'notifications_number': notifications_number,
                                                         'users': users,
+                                                        'messages_received': messages_received
                                                         })
 
 @login_required(login_url='login')

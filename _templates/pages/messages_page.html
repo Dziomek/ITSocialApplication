@@ -6,31 +6,60 @@
     <div class="container-fluid d-flex flex-row justify-content-center" style="margin-top:150px">
         <div class="d-flex shadow rounded w-75" style="height: 80vh">
             <div class="w-25 overflow-auto">
-                {% for user in users %}
-                    <div type="button" onclick="messageClick('{{ user.username }}')" class="d-flex shadow rounded align-items-center p-3 overflow-auto">
+                <div class="container m-0">
+                    <p class="fs-3 text-secondary">Received messages</p>
+                </div>
+                <hr>
+                {% for message in messages_received %}
+                    <div type="button" onclick="messageClick('{{ message.topic }}', '{{ message.content }}')" class="d-flex shadow rounded align-items-center p-3 overflow-auto">
                     <a href="{% url 'profile' user.username %}">
-                        <img src="{{ user.profile_img.url }}" alt="avatar"
+                        <img src="{{ message.sender.profile_img.url }}" alt="avatar"
                              class="rounded-circle me-2" style="width: 38px; height: 38px; object-fit: cover;">
                     </a>
-                    <p class="text-secondary m-0">{{ user.username }}</p>
-                    <p class="text-dark m-0 mx-3">Temat temat temat </p>
+                    <p class="text-secondary m-0">{{ message.sender.username }}</p>
+                    <p class="text-dark m-0 mx-3">{{ message.topic }} </p>
                 </div>
                 {% endfor %}
             </div>
             <div id="messagesDiv" class="shadow rounded w-100">
-                <button type="button" data-bs-toggle="modal" data-bs-target="#messageModal">
-                    Create new message
-                </button>
+                <div id="messagesContent" class="mb-2" style="height: 90%">
+                    <div class="text-center">
+                        <p class="fs-3 text-secondary">Message content</p>
+                    </div>
+                    <hr>
+                    <div class="d-flex p-3 w-100">
+                        <img src="{{ current_user.profile_img.url }}" alt="avatar"
+                             class="rounded-circle me-2" style="width: 100px; height: 100px; object-fit: cover;">
+                        <p class="text-dark fs-3 my-auto mx-2">Username</p>
+                    </div>
+                    <div class="p-3">
+                        <p class="fs-1 text-dark">Topic</p>
+                    </div>
+                    <div class="p-3">
+                        <p class="fs-4 text-secondary">Content</p>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end mx-3">
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#messageModal" class="btn btn-lg btn-outline-primary border-radius" style="height:100%">
+                        <i class="fa-solid fa-plus fs-1" style=""></i>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
     <script>
-        function messageClick(username) {
-            div = document.getElementById("messagesDiv")
+        function messageClick(topic, content) {
+            const div = document.getElementById("messagesDiv")
             div.innerHTML = ''
-            p = document.createElement("p")
-            p.innerText = username
-            div.appendChild(p)
+            const div1 = document.createElement('div')
+            div1.classList.add('d-flex', 'p-3', 'w-100')
+            const img = document.createElement('img')
+            img.classList.add('rounded-circle', 'me-2')
+            img.style = "width: 100px; height: 100px; object-fit: cover;"
+            const pUsername = document.createElement("p")
+            pUsername.classList.add('text-dark', 'fs-3', 'my-auto', 'mx-2')
+
+
         }
     </script>
 {% endblock %}

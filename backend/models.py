@@ -46,7 +46,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
 class Profile(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    about = models.TextField(default=f'Hi. I am {user} and this is my profile page')
+    about = models.TextField(default=f'Hi. This is my profile page')
     location = models.CharField(max_length=150, default='Not set')
     day = models.CharField(max_length=2, default='')
     month = models.CharField(max_length=10, default='')
