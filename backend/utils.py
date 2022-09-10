@@ -1,5 +1,11 @@
+import requests
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 import six
+
+################ RESPONSE TO API #####################
+RESPONSE = requests.get('https://itsocialapp.azurewebsites.net/newsapi').json()
+
+################ TOKEN #####################
 
 
 class TokenGenerator(PasswordResetTokenGenerator):
@@ -8,3 +14,6 @@ class TokenGenerator(PasswordResetTokenGenerator):
 
 
 generate_token = TokenGenerator()
+
+
+

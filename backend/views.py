@@ -1,3 +1,4 @@
+import requests
 from django.contrib.auth import get_user_model
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMessage
@@ -18,7 +19,7 @@ from annoying.functions import get_object_or_None
 from django.views.generic import ListView
 import json
 # Create your views here.
-from .utils import generate_token
+from .utils import generate_token, RESPONSE
 
 
 def start_route(request):
@@ -41,7 +42,8 @@ def home(request):
                                                     'notifications': notifications,
                                                     'notifications_number': notifications_number,
                                                     'follows': follows,
-                                                    'messages_received_number': messages_received_number})
+                                                    'messages_received_number': messages_received_number,
+                                                    'response': RESPONSE})
 
 
 def login(request):

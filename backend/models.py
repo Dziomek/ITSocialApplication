@@ -57,7 +57,7 @@ class Post(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     topic = models.TextField()
     content = models.TextField()
-    picture = models.ImageField(blank=True, null=True)
+    picture = models.ImageField(upload_to='post_images', blank=True, null=True)
     date = models.DateField(auto_now_add=True)
     number_of_comments = models.IntegerField(default=0)
     rating = models.IntegerField(default=0)
