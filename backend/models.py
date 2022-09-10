@@ -51,6 +51,9 @@ class Profile(models.Model):
     day = models.CharField(max_length=2, default='')
     month = models.CharField(max_length=10, default='')
     year = models.CharField(max_length=4, default='')
+    github_link = models.CharField(max_length=50, default='')
+    facebook_link = models.CharField(max_length=50, default='')
+    twitter_link = models.CharField(max_length=50, default='')
 
 
 class Post(models.Model):

@@ -56,8 +56,28 @@
                 <i class="fa-solid fa-mars-and-venus fs-3"></i>
                 <p class="fs-5 mx-3 my-auto"><strong>Gender:</strong> {{ searched_user.gender }}</p>
             </div>
-
-
+            <hr>
+            <div class="d-flex flex-row p-2 align-items-center">
+                <i class="fa-solid fa-link fs-3"></i>
+                <p class="fs-5 mx-3 my-auto"><strong>Links:</strong></p>
+                <div class="d-flex justify-content-between mx-3">
+                    {% if user_profile.github_link %}
+                        <a href="{{ user_profile.github_link }}">
+                            <img src="/_static/images/github.png" class="img-fluid m-2" style="max-height: 38px; object-fit: cover" alt="">
+                        </a>
+                    {% endif %}
+                    {% if user_profile.facebook_link %}
+                        <a href="{{ user_profile.facebook_link }}">
+                            <img src="/_static/images/facebook.png" class="img-fluid m-2" style="max-height: 38px; object-fit: cover" alt="">
+                        </a>
+                    {% endif %}
+                    {% if user_profile.twitter_link %}
+                        <a href="{{ user_profile.twitter_link }}">
+                            <img src="/_static/images/twitter.png" class="img-fluid m-2" style="max-height: 38px; object-fit: cover" alt="">
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
         </div>
         <div class="mx-3 "style="max-width: 60rem; width: 100%;">
             <div class="bg-white shadow rounded p-3 input-group-lg">

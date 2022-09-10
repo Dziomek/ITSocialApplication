@@ -341,7 +341,10 @@ def edit_profile(request):
         ##########################################################
         location = request.POST['location']
         bio = request.POST['bio']
-        update_profile_parameters(user_profile, bio, location, day, month, year)
+        github_link = request.POST['githubLink']
+        twitter_link = request.POST['twitterLink']
+        facebook_link = request.POST['facebookLink']
+        update_profile_parameters(user_profile, bio, location, day, month, year, github_link, facebook_link, twitter_link)
 
     return redirect('profile', username=current_user.username)
 
