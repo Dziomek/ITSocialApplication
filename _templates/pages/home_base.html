@@ -16,7 +16,9 @@
         <div class="row align-items-center">
             <div class="col d-flex align-items-center">
                 <!-- Icon -->
-                <img id="githubImg" src="/_static/images/github.png" class="img-fluid m-2" style="max-height: 60px" alt="">
+                <a href="{% url 'home' %}">
+                    <img id="githubImg" src="/_static/images/github.png" class="img-fluid m-2" style="max-height: 60px" alt="">
+                </a>
                 <!-- Search bar -->
                 <div class="input-group m-4">
                     <span type="button" class="input-group-prepend d-none d-lg-block" id="searchMenu" data-bs-toggle="dropdown"
@@ -39,7 +41,7 @@
                 <div class="mx-4 nav__btn">
                     <a href="{% url 'home' %}">
                         <button class="btn px-4 border-0" id="homeButton">
-                            <i class="fa-solid fa-desktop fs-4 text-secondary" style="pointer-events: none"></i>
+                            <i class="fa-solid fa-earth-americas fs-4 text-secondary" style="pointer-events: none"></i>
                         </button>
                     </a>
                 </div>

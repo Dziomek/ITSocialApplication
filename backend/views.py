@@ -423,3 +423,6 @@ def activate_user(request, uidb64, token):
     else:
         return render(request, 'reset_and_activate/account_activate/activate_account_failed.html')
 
+def error_404_view(request, exception):
+    return render(request, 'pages/404.html')
+
