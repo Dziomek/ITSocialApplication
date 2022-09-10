@@ -20,9 +20,9 @@
                         <!-- author info -->
                         <div class="d-flex justify-content-between">
                              <div class="d-flex align-items-center">
-                                 <img src="/_static/images/github.png" class="rounded-circle" style="width: 38px; height: 38px; object-fit: cover" alt="">
+                                 <img src="{{ object.source_img }}" class="rounded-circle" style="width: 38px; height: 38px; object-fit: cover" alt="">
                                  <div>
-                                     <p class="m-0 mx-2 fw-bold"> news@news.com </p>
+                                     <p class="m-0 mx-2 fw-bold"> {{ object.source_name }} </p>
                                      <span class="mx-2 text-muted fs-7"> {{ object.date_published }} </span>
                                  </div>
                              </div>
@@ -30,16 +30,16 @@
                         <!-- post -->
                         <div class="mt-3">
                             <!-- content -->
+                            <p>{{ object.description }}</p>
                             <div class="d-flex flex-column align-items-center">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                                    Commodi cupiditate earum eius expedita in nesciunt nostrum omnis ratione similique velit? Consequatur dolor,
-                                    eaque enim iure nobis non possimus recusandae rem?</p>
-                                <img src="{{ object.img }}" alt="post image" class="img-fluid w-100"  style="max-height: 400px">
+                                <a href="{{ object.news_url }}">
+                                    <img src="{{ object.news_img }}" alt="post image" class="img-fluid w-100" style="width:100%;">
+                                </a>
                             </div>
                             <div class="mt-1">
-                                <p class="m-0 text-muted">website@website.com</p>
+                                <p class="m-0 text-muted">{{ object.source_url }}</p>
                                 <h3 class="m-0 text-dark">{{ object.title }}</h3>
-                                <p class="m-0 text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet aut distinctio facilis impedit laborum non omnis quod reprehenderit sed voluptatum!</p>
+                                <p class="m-0 text-muted">{{ object.subtitle }}</p>
                                 <hr>
                             </div>
                         </div>
