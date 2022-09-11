@@ -404,6 +404,7 @@ def send_activation_email(user, request):
         'token': generate_token.make_token(user)
     })
     email = EmailMessage(subject=email_subject, body=email_body, from_email=EMAIL_HOST_USER, to=[user.email])
+    email.content_subtype = "html"
     email.send()
 
 
