@@ -98,7 +98,7 @@ def register(request):
                     send_activation_email(user, request)
                     return render(request, 'reset_and_activate/account_activate/activate_account.html',
                                   {'current_user': user
-                    })
+                                   })
             else:
                 messages.info(request, "Passwords don't match. Please try again")
         else:
@@ -124,7 +124,6 @@ def profile(request, username):
     notifications = Notification.objects.all()
     notifications_number = Notification.objects.filter(to_user=current_user).count()
     messages_received_number = Message.objects.filter(recipient=current_user).count()
-
 
     return render(request, 'pages/profile_page.html', {'current_user': current_user,
                                                        'user_profile': user_profile,
@@ -153,7 +152,6 @@ def forum(request):
     messages_received_number = Message.objects.filter(recipient=current_user).count()
     get_number_of_comments()
 
-
     return render(request, 'pages/forum_page.html', {'current_user': current_user,
                                                      'user_profile': user_profile,
                                                      'posts': posts,
@@ -166,6 +164,7 @@ def forum(request):
                                                      'follows': follows,
                                                      'messages_received_number': messages_received_number
                                                      })
+
 
 @login_required(login_url='login')
 def add_post(request):
@@ -199,7 +198,6 @@ def post_view(request, post_id):
     notifications_number = Notification.objects.filter(to_user=current_user).count()
     messages_received_number = Message.objects.filter(recipient=current_user).count()
 
-
     return render(request, 'pages/post_page.html', {'post': post,
                                                     'current_user': current_user,
                                                     'comments': comments,
@@ -209,6 +207,7 @@ def post_view(request, post_id):
                                                     'notifications_number': notifications_number,
                                                     'messages_received_number': messages_received_number
                                                     })
+
 
 @login_required(login_url='login')
 def delete_post(request, post_id):
@@ -222,7 +221,6 @@ def delete_post(request, post_id):
 
 @login_required(login_url='login')
 def create_comment(request, post_id):
-
     if request.method == 'POST':
         current_user = request.user
         post = Post.objects.get(id=post_id)
@@ -272,6 +270,7 @@ def like_post(request, post_id):
 
     return redirect('post_view', post_id=post_id)
 
+
 @login_required(login_url='login')
 def dislike_post(request, post_id):
     current_user = request.user
@@ -295,6 +294,7 @@ def dislike_post(request, post_id):
         dislike.delete()
 
     return redirect('post_view', post_id=post_id)
+
 
 @login_required(login_url='login')
 def follow_or_unfollow(request, username):
@@ -321,6 +321,7 @@ def follow_or_unfollow(request, username):
 
     return redirect('profile', username=user.username)
 
+
 @login_required(login_url='login')
 def edit_profile(request):
     current_user = request.user
@@ -344,9 +345,11 @@ def edit_profile(request):
         github_link = request.POST['githubLink']
         twitter_link = request.POST['twitterLink']
         facebook_link = request.POST['facebookLink']
-        update_profile_parameters(user_profile, bio, location, day, month, year, github_link, facebook_link, twitter_link)
+        update_profile_parameters(user_profile, bio, location, day, month, year, github_link, facebook_link,
+                                  twitter_link)
 
     return redirect('profile', username=current_user.username)
+
 
 @login_required(login_url='login')
 def messages_page(request):
@@ -365,6 +368,7 @@ def messages_page(request):
                                                         'messages_received_number': messages_received_number
                                                         })
 
+
 @login_required(login_url='login')
 def create_message(request):
     if request.method == 'POST':
@@ -380,6 +384,7 @@ def create_message(request):
 
     return redirect('messages')
 
+
 @login_required(login_url='login')
 def delete_message(request, message_id):
     message_to_delete = Message.objects.get(id=message_id)
@@ -387,7 +392,6 @@ def delete_message(request, message_id):
         message_to_delete.delete()
 
     return redirect('messages')
-
 
 
 def activate_account_complete(request):
@@ -404,6 +408,7 @@ def send_activation_email(user, request):
         'token': generate_token.make_token(user)
     })
     email = EmailMessage(subject=email_subject, body=email_body, from_email=EMAIL_HOST_USER, to=[user.email])
+    email.content_subtype = "html"
     email.send()
 
 
@@ -423,6 +428,6 @@ def activate_user(request, uidb64, token):
     else:
         return render(request, 'reset_and_activate/account_activate/activate_account_failed.html')
 
+
 def error_404_view(request, exception):
     return render(request, 'pages/404.html')
-
