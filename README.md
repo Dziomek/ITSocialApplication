@@ -7,6 +7,7 @@ Portal społecznościowy. Frontend: **Bootstrap**, backend: **Django**. Dodatkow
 
 ## Potwierdzanie konta za pomocą maila
 <img src='/_static/screenshots/mail.png'>
+<img src='/_static/screenshots/mail2.png'>
 <img src='/_static/screenshots/confirm.png'>
 
 ## Reset hasła
