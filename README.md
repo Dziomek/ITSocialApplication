@@ -1,5 +1,6 @@
 # **ITSocialApplication**
 Portal społecznościowy. Frontend: **Bootstrap**, backend: **Django**. Dodatkowo Flask API, JS.
+API: https://github.com/nieckojakub/ITSocialAPP_restapi
 
 ## Logowanie/rejestracja
 <img src='/_static/screenshots/login.png' style='height:400px'>
