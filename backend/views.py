@@ -397,11 +397,15 @@ def activate_account_complete(request):
 def send_activation_email(user, request):
     current_site = get_current_site(request)
     email_subject = '[ITSocialApp] Activate your account'
+    token = generate_token.make_token(user)
+    uid = urlsafe_base64_encode(force_bytes(user.pk))
+    print(token)
+    print(uid)
     email_body = render_to_string('reset_and_activate/account_activate/activate_account_email.html', {
         'user': user,
         'domain': current_site,
-        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-        'token': generate_token.make_token(user)
+        'uid': uid,
+        'token': token
     })
     email = EmailMessage(subject=email_subject, body=email_body, from_email=EMAIL_HOST_USER, to=[user.email])
     email.content_subtype = "html"
